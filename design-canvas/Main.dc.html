@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="./support.js"></script>
+  </head>
+  <body>
+    <x-dc>
+      <helmet>
+        <title>Dashboard</title>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Caveat:wght@500&display=swap"
+        />
+        <style>
+          body {
+            margin: 0;
+          }
+          .app {
+            /* ---- verbatim from packages/excalidraw/css/theme.scss (.excalidraw) ---- */
+            --ui-font: Assistant, system-ui, BlinkMacSystemFont, -apple-system,
+              "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --hand-font: Caveat, "Comic Sans MS", cursive;
+            --color-primary: #6965db;
+            --color-primary-darker: #5b57d1;
+            --color-primary-darkest: #4a47b1;
+            --color-primary-light: #e3e2fe;
+            --color-primary-light-darker: #d7d5ff;
+            --color-primary-hover: #5753d0;
+            --color-brand-hover: #5753d0;
+            --color-brand-active: #4440bf;
+            --color-on-primary-container: #030064;
+            --color-surface-primary-container: #e0dfff;
+            --color-surface-high: #f1f0ff;
+            --color-surface-mid: #f6f6f9;
+            --color-surface-low: #ececf4;
+            --color-surface-lowest: #ffffff;
+            --color-on-surface: #1b1b1f;
+            --color-border-outline: #767680;
+            --color-border-outline-variant: #c5c5d0;
+            --color-gray-10: #f5f5f5;
+            --color-gray-20: #ebebeb;
+            --color-gray-30: #d6d6d6;
+            --color-gray-40: #b8b8b8;
+            --color-gray-50: #999999;
+            --color-gray-60: #7a7a7a;
+            --color-gray-70: #5c5c5c;
+            --color-gray-80: #3d3d3d;
+            --color-gray-85: #242424;
+            --color-gray-90: #1e1e1e;
+            --color-gray-100: #121212;
+            --color-danger: #db6965;
+            --color-danger-dark: #db6965;
+            --color-danger-text: black;
+            --color-danger-background: #fff0f0;
+            --color-danger-color: #700000;
+            --color-logo-text: #190064;
+            --island-bg-color: #ffffff;
+            --default-bg-color: #fff;
+            --dialog-border-color: var(--color-gray-20);
+            --input-bg-color: #fff;
+            --input-border-color: #ced4da;
+            --link-color: #1c7ed6;
+            --keybinding-color: var(--color-gray-40);
+            --text-primary-color: var(--color-on-surface);
+            --icon-fill-color: var(--color-on-surface);
+            --default-border-color: var(--color-surface-high);
+            --button-hover-bg: var(--color-surface-high);
+            --sidebar-border-color: var(--color-surface-high);
+            --sidebar-bg-color: var(--island-bg-color);
+            --shadow-island: 0px 0px 1px 0px rgba(0, 0, 0, 0.17),
+              0px 0px 3px 0px rgba(0, 0, 0, 0.08),
+              0px 7px 14px 0px rgba(0, 0, 0, 0.05);
+            --shadow-island-stronger: 0px 0px 1px 0px rgba(0, 0, 0, 0.17),
+              0px 0px 3px 0px rgba(0, 0, 0, 0.08),
+              0px 7px 14px 0px rgb(0 0 0 / 18%);
+            --modal-shadow: 0px 100px 80px rgba(0, 0, 0, 0.07),
+              0px 41.7776px 33.4221px rgba(0, 0, 0, 0.0503198),
+              0px 22.3363px 17.869px rgba(0, 0, 0, 0.0417275),
+              0px 12.5216px 10.0172px rgba(0, 0, 0, 0.035),
+              0px 6.6501px 5.32008px rgba(0, 0, 0, 0.0282725),
+              0px 2.76726px 2.21381px rgba(0, 0, 0, 0.0196802);
+            --sidebar-shadow: var(--modal-shadow);
+            --space-factor: 0.25rem;
+            --border-radius-md: 0.375rem;
+            --border-radius-lg: 0.5rem;
+            --default-button-size: 2rem;
+            --default-icon-size: 1rem;
+            --lg-button-size: 2.25rem;
+            --lg-icon-size: 1rem;
+            --editor-container-padding: 1rem;
+            --right-sidebar-width: 302px;
+            /* ---- ExcTextField tokens (components/TextField.scss) ---- */
+            --ExcTextField--color: var(--color-on-surface);
+            --ExcTextField--background: var(--color-surface-low);
+            --ExcTextField--border: var(--color-gray-20);
+            --ExcTextField--border-hover: var(--color-brand-hover);
+            --ExcTextField--border-active: var(--color-brand-active);
+            --ExcTextField--placeholder: var(--color-border-outline-variant);
+            /* ---- app-only tokens: project accents (open-color 0 / 7) ---- */
+            --pc-gray-bg: #f1f3f5;
+            --pc-gray: #868e96;
+            --pc-violet-bg: #f3f0ff;
+            --pc-violet: #7048e8;
+            --pc-blue-bg: #e7f5ff;
+            --pc-blue: #1c7ed6;
+            --pc-teal-bg: #e6fcf5;
+            --pc-teal: #0ca678;
+            --pc-green-bg: #ebfbee;
+            --pc-green: #37b24d;
+            --pc-yellow-bg: #fff9db;
+            --pc-yellow: #f59f00;
+            --pc-orange-bg: #fff4e6;
+            --pc-orange: #f76707;
+            --pc-red-bg: #fff5f5;
+            --pc-red: #e03131;
+            --pc-pink-bg: #fff0f6;
+            --pc-pink: #d6336c;
+
+            font-family: var(--ui-font);
+            color: var(--text-primary-color);
+            background: var(--default-bg-color);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+          }
+          .app.theme--dark {
+            /* ---- verbatim from .excalidraw.theme--dark ---- */
+            --color-primary: #a8a5ff;
+            --color-primary-darker: #b2aeff;
+            --color-primary-darkest: #beb9ff;
+            --color-primary-light: #4f4d6f;
+            --color-primary-light-darker: #43415e;
+            --color-primary-hover: #bbb8ff;
+            --color-brand-hover: #bbb8ff;
+            --color-brand-active: #d0ccff;
+            --color-on-primary-container: #e0dfff;
+            --color-surface-primary-container: #403e6a;
+            --color-surface-high: #2e2d39;
+            --color-surface-low: hsl(240, 8%, 15%);
+            --color-surface-mid: hsl(240 6% 10%);
+            --color-surface-lowest: hsl(0, 0%, 7%);
+            --color-on-surface: #e3e3e8;
+            --color-border-outline: #8e8d9c;
+            --color-border-outline-variant: #46464f;
+            --color-danger: #ffa8a5;
+            --color-danger-dark: #672120;
+            --color-danger-text: #fbcbcc;
+            --color-danger-background: #fbcbcc;
+            --color-danger-color: #261919;
+            --color-logo-text: #e2dfff;
+            --island-bg-color: #232329;
+            --default-bg-color: #121212;
+            --dialog-border-color: var(--color-gray-80);
+            --input-bg-color: #121212;
+            --input-border-color: #2e2e2e;
+            --link-color: #4dabf7;
+            --keybinding-color: var(--color-gray-60);
+            --ExcTextField--border: var(--color-border-outline-variant);
+            --pc-gray-bg: #2b2d31;
+            --pc-violet-bg: #2f2a4a;
+            --pc-blue-bg: #1f2f43;
+            --pc-teal-bg: #163a30;
+            --pc-green-bg: #1d3a24;
+            --pc-yellow-bg: #3d3416;
+            --pc-orange-bg: #3f2a17;
+            --pc-red-bg: #40201f;
+            --pc-pink-bg: #3f1f2c;
+          }
+          a {
+            color: var(--link-color);
+            text-decoration: none;
+          }
+          a:hover {
+            color: var(--color-brand-hover);
+            text-decoration: underline;
+          }
+          /* ---- Island (components/Island.scss) ---- */
+          .Island {
+            box-sizing: border-box;
+            background-color: var(--island-bg-color);
+            box-shadow: var(--shadow-island);
+            border-radius: var(--border-radius-lg);
+            position: relative;
+          }
+          /* ---- FilledButton (components/FilledButton.scss) ---- */
+          .ExcButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            gap: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            font-family: var(--ui-font);
+            font-weight: 600;
+            font-size: 0.75rem;
+            min-height: 2.5rem;
+            padding: 0.5rem 1rem;
+            letter-spacing: normal;
+            user-select: none;
+            box-sizing: border-box;
+            cursor: pointer;
+            white-space: nowrap;
+          }
+          .ExcButton--large {
+            font-size: 0.875rem;
+            min-height: 3rem;
+            padding: 0.5rem 1.5rem;
+            letter-spacing: 0.4px;
+            gap: 0.75rem;
+          }
+          .ExcButton--filled {
+            color: var(--color-surface-lowest);
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+          }
+          .ExcButton--outlined {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+            background: transparent;
+          }
+          .ExcButton--danger {
+            color: var(--color-danger);
+            border-color: var(--color-danger);
+            background: transparent;
+          }
+          .ExcButton svg {
+            width: 1.25rem;
+            height: 1.25rem;
+          }
+          /* ---- outline icon button / dropdown-menu-button (DropdownMenu.scss) ---- */
+          .IconButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: var(--lg-button-size);
+            height: var(--lg-button-size);
+            box-sizing: border-box;
+            border: 1px solid var(--default-border-color);
+            border-radius: var(--border-radius-lg);
+            background-color: var(--color-surface-mid);
+            color: var(--color-on-surface);
+            cursor: pointer;
+            flex-shrink: 0;
+          }
+          .IconButton svg {
+            width: var(--lg-icon-size);
+            height: var(--lg-icon-size);
+          }
+          .IconButton--ghost {
+            background: transparent;
+            border-color: transparent;
+            width: var(--default-button-size);
+            height: var(--default-button-size);
+          }
+          /* ---- ToolIcon (components/ToolIcon.scss) ---- */
+          .ToolIcon {
+            width: var(--lg-button-size);
+            height: var(--lg-button-size);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-lg);
+            color: var(--icon-fill-color);
+            position: relative;
+            box-sizing: border-box;
+          }
+          .ToolIcon svg {
+            width: var(--lg-icon-size);
+            height: var(--lg-icon-size);
+          }
+          .ToolIcon--checked {
+            background: var(--color-surface-primary-container);
+          }
+          .ToolIcon--checked svg {
+            color: var(--color-on-primary-container);
+          }
+          .ToolIcon__keybinding {
+            position: absolute;
+            bottom: 2px;
+            right: 3px;
+            font-size: 0.625rem;
+            color: var(--keybinding-color);
+          }
+          /* ---- ExcTextField (components/TextField.scss) ---- */
+          .ExcTextField {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+          }
+          .ExcTextField__label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            line-height: 150%;
+            margin-bottom: 0.25rem;
+          }
+          .ExcTextField__input {
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            height: 3rem;
+            background: var(--ExcTextField--background);
+            border: 1px solid var(--ExcTextField--border);
+            border-radius: 0.5rem;
+            padding: 0 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 150%;
+            color: var(--ExcTextField--color);
+            gap: 0.5rem;
+          }
+          .ExcTextField__input--placeholder {
+            color: var(--ExcTextField--placeholder);
+          }
+          .ExcTextField__input--active {
+            border-color: var(--ExcTextField--border-active);
+          }
+          .ExcTextField--hasIcon .ExcTextField__input {
+            padding-left: 2.5rem;
+          }
+          .ExcTextField > svg {
+            position: absolute;
+            left: 0.75rem;
+            bottom: 0.875rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--color-gray-40);
+          }
+          .ExcTextField--compact .ExcTextField__input {
+            height: 2.25rem;
+            font-size: 0.875rem;
+          }
+          .ExcTextField--compact > svg {
+            bottom: 0.5rem;
+            width: 1.125rem;
+            height: 1.125rem;
+          }
+          /* ---- Switch (components/Switch.scss) ---- */
+          .Switch {
+            position: relative;
+            box-sizing: border-box;
+            width: 40px;
+            height: 20px;
+            border-radius: 12px;
+            background: var(--island-bg-color);
+            border: 1px solid var(--color-border-outline);
+            flex-shrink: 0;
+          }
+          .Switch::before {
+            content: "";
+            position: absolute;
+            border-radius: 100%;
+            width: 10px;
+            height: 10px;
+            top: 4px;
+            left: 4px;
+            background: var(--color-on-surface);
+          }
+          .Switch--on {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+          }
+          .Switch--on::before {
+            width: 14px;
+            height: 14px;
+            left: 22px;
+            top: 2px;
+            background: var(--island-bg-color);
+          }
+          /* ---- Tag chip (app) ---- */
+          .Tag {
+            display: inline-flex;
+            align-items: center;
+            height: 1.25rem;
+            padding: 0 0.5rem;
+            border-radius: var(--border-radius-md);
+            background: var(--color-surface-high);
+            color: var(--color-on-primary-container);
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1;
+            white-space: nowrap;
+          }
+          /* ---- Dialog (components/Modal.scss + Dialog.scss) ---- */
+          .Modal__content {
+            background: var(--island-bg-color);
+            border: 1px solid var(--dialog-border-color);
+            box-shadow: var(--modal-shadow);
+            border-radius: 0.75rem;
+            box-sizing: border-box;
+            padding: 2.5rem;
+            position: relative;
+          }
+          .Dialog__title {
+            margin: 0 0 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--dialog-border-color);
+            padding: 0 0 0.75rem;
+          }
+          .Dialog__close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.5rem;
+            color: var(--color-gray-40);
+            width: 1.5rem;
+            height: 1.5rem;
+          }
+          .Dialog__action-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            height: 3rem;
+            border: 1px solid var(--default-border-color);
+            border-radius: var(--border-radius-lg);
+            background: transparent;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            color: inherit;
+            box-sizing: border-box;
+            cursor: pointer;
+          }
+          .Dialog__action-button--primary {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: #fff;
+          }
+          .Dialog__action-button--danger {
+            background: var(--color-danger);
+            border-color: var(--color-danger);
+            color: #fff;
+          }
+          /* ---- dropdown menu (components/dropdownMenu/DropdownMenu.scss) ---- */
+          .dropdown-menu-container {
+            background: var(--island-bg-color);
+            box-shadow: var(--shadow-island);
+            border-radius: var(--border-radius-lg);
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 12rem;
+          }
+          .dropdown-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            height: 2rem;
+            padding: 0 0.5rem;
+            font-size: 0.875rem;
+            border-radius: var(--border-radius-md);
+            color: var(--color-on-surface);
+            box-sizing: border-box;
+          }
+          .dropdown-menu-item svg {
+            width: 1rem;
+            height: 1rem;
+          }
+          .dropdown-menu-item--selected {
+            background: var(--color-primary-light);
+          }
+          .dropdown-menu-item--hover {
+            background: var(--button-hover-bg);
+          }
+          .dropdown-menu-item--danger {
+            color: var(--color-danger-color);
+          }
+          .muted {
+            color: var(--color-gray-60);
+          }
+          .sketch {
+            font-family: var(--hand-font);
+            color: var(--color-on-surface);
+          }
+        </style>
+      </helmet>
+      <div
+        class="app"
+        style="
+          width: 1440px;
+          height: 900px;
+          box-sizing: border-box;
+          overflow: hidden;
+          background: var(--default-bg-color);
+          position: relative;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            height: 4rem;
+            padding: 0 2rem;
+            border-bottom: 1px solid var(--color-surface-high);
+            box-sizing: border-box;
+          "
+        >
+          <div style="display: flex; align-items: center; gap: 0.625rem">
+            <div
+              style="
+                width: 2rem;
+                height: 2rem;
+                border-radius: 0.5rem;
+                background: var(--color-primary);
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1.125rem; height: 1.125rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M12 4l-8 4l8 4l8 -4l-8 -4"></path>
+                <path d="M4 12l8 4l8 -4"></path>
+                <path d="M4 16l8 4l8 -4"></path>
+              </svg>
+            </div>
+            <div
+              style="
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: var(--color-logo-text);
+                letter-spacing: -0.01em;
+              "
+            >
+              Excalidraw Projects
+            </div>
+          </div>
+          <div style="flex-grow: 1; display: flex; justify-content: center">
+            <div
+              class="ExcTextField ExcTextField--hasIcon"
+              style="width: 22.5rem"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1.25rem; height: 1.25rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                <path d="M21 21l-6 -6"></path>
+              </svg>
+              <div class="ExcTextField__input">
+                <span class="ExcTextField__input--placeholder"
+                  >Search projects, designs, #tags</span
+                >
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem">
+            <div class="IconButton" title="Import backup">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1rem; height: 1rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
+                <path d="M7 9l5 -5l5 5"></path>
+                <path d="M12 4l0 12"></path>
+              </svg>
+            </div>
+            <div class="IconButton" title="Export all projects">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1rem; height: 1rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
+                <path d="M7 11l5 5l5 -5"></path>
+                <path d="M12 4l0 12"></path>
+              </svg>
+            </div>
+            <div class="ExcButton ExcButton--filled">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1.25rem; height: 1.25rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M12 5l0 14"></path>
+                <path d="M5 12l14 0"></path></svg
+              ><span>New project</span>
+            </div>
+          </div>
+        </div>
+        <div
+          style="
+            padding: 1.75rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+          "
+        >
+          <div style="display: flex; align-items: center; gap: 0.75rem">
+            <div style="font-size: 1.25rem; font-weight: 600">Projects</div>
+            <div class="muted" style="font-size: 0.875rem">8</div>
+            <div style="flex-grow: 1"></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.75rem;
+                font-weight: 600;
+                letter-spacing: 0.4px;
+              "
+            >
+              <div class="Switch"></div>
+              <span>Show archived</span>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                height: 2.25rem;
+                padding: 0 0.625rem 0 0.75rem;
+                border: 1px solid var(--default-border-color);
+                border-radius: var(--border-radius-lg);
+                background: var(--color-surface-mid);
+                font-size: 0.75rem;
+                font-weight: 600;
+                letter-spacing: 0.4px;
+                box-sizing: border-box;
+              "
+            >
+              <span class="muted" style="font-weight: 500">Sort</span
+              ><span>Last updated</span
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1rem; height: 1rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M6 9l6 6l6 -6"></path>
+              </svg>
+            </div>
+          </div>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(4, minmax(0, 1fr));
+              gap: 1.5rem;
+            "
+          >
+            <div
+              class="Island"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.875rem;
+                padding: 1.25rem;
+                box-sizing: border-box;
+                min-height: 11.5rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                "
+              >
+                <div
+                  style="
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 0.625rem;
+                    background: var(--pc-violet-bg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                  "
+                >
+                  🛒
+                </div>
+                <div
+                  class="IconButton IconButton--ghost"
+                  style="color: var(--color-gray-50)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="width: 1rem; height: 1rem; flex-shrink: 0"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.125rem;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="font-size: 1rem; font-weight: 600; line-height: 1.3"
+                >
+                  Checkout redesign
+                </div>
+                <div class="muted" style="font-size: 0.75rem">
+                  7 designs · edited 2 hours ago
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.375rem; flex-wrap: wrap">
+                <span class="Tag">web</span><span class="Tag">payments</span>
+              </div>
+            </div>
+            <div
+              class="Island"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.875rem;
+                padding: 1.25rem;
+                box-sizing: border-box;
+                min-height: 11.5rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                "
+              >
+                <div
+                  style="
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 0.625rem;
+                    background: var(--pc-blue-bg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                  "
+                >
+                  📱
+                </div>
+                <div
+                  class="IconButton IconButton--ghost"
+                  style="color: var(--color-gray-50)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="width: 1rem; height: 1rem; flex-shrink: 0"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.125rem;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="font-size: 1rem; font-weight: 600; line-height: 1.3"
+                >
+                  Mobile onboarding
+                </div>
+                <div class="muted" style="font-size: 0.75rem">
+                  4 designs · edited yesterday
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.375rem; flex-wrap: wrap">
+                <span class="Tag">ios</span><span class="Tag">android</span>
+              </div>
+            </div>
+            <div
+              class="Island"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.875rem;
+                padding: 1.25rem;
+                box-sizing: border-box;
+                min-height: 11.5rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                "
+              >
+                <div
+                  style="
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 0.625rem;
+                    background: var(--pc-orange-bg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                  "
+                >
+                  🏗️
+                </div>
+                <div
+                  class="IconButton IconButton--ghost"
+                  style="color: var(--color-gray-50)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="width: 1rem; height: 1rem; flex-shrink: 0"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.125rem;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="font-size: 1rem; font-weight: 600; line-height: 1.3"
+                >
+                  Platform architecture
+                </div>
+                <div class="muted" style="font-size: 0.75rem">
+                  9 designs · edited 3 days ago
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.375rem; flex-wrap: wrap">
+                <span class="Tag">infra</span>
+              </div>
+            </div>
+            <div
+              class="Island"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.875rem;
+                padding: 1.25rem;
+                box-sizing: border-box;
+                min-height: 11.5rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                "
+              >
+                <div
+                  style="
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 0.625rem;
+                    background: var(--pc-teal-bg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                  "
+                >
+                  🧭
+                </div>
+                <div
+                  class="IconButton IconButton--ghost"
+                  style="color: var(--color-gray-50)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="width: 1rem; height: 1rem; flex-shrink: 0"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.125rem;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="font-size: 1rem; font-weight: 600; line-height: 1.3"
+                >
+                  Navigation explorations
+                </div>
+                <div class="muted" style="font-size: 0.75rem">
+                  12 designs · edited last week
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.375rem; flex-wrap: wrap">
+                <span class="Tag">web</span><span class="Tag">ia</span>
+              </div>
+            </div>
+            <div
+              class="Island"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.875rem;
+                padding: 1.25rem;
+                box-sizing: border-box;
+                min-height: 11.5rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                "
+              >
+                <div
+                  style="
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 0.625rem;
+                    background: var(--pc-green-bg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                  "
+                >
+                  📊
+                </div>
+                <div
+                  class="IconButton IconButton--ghost"
+                  style="color: var(--color-gray-50)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="width: 1rem; height: 1rem; flex-shrink: 0"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.125rem;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="font-size: 1rem; font-weight: 600; line-height: 1.3"
+                >
+                  Analytics dashboard
+                </div>
+                <div class="muted" style="font-size: 0.75rem">
+                  3 designs · edited last week
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.375rem; flex-wrap: wrap">
+                <span class="Tag">data</span>
+              </div>
+            </div>
+            <div
+              class="Island"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.875rem;
+                padding: 1.25rem;
+                box-sizing: border-box;
+                min-height: 11.5rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                "
+              >
+                <div
+                  style="
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 0.625rem;
+                    background: var(--pc-red-bg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                  "
+                >
+                  🔐
+                </div>
+                <div
+                  class="IconButton IconButton--ghost"
+                  style="color: var(--color-gray-50)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="width: 1rem; height: 1rem; flex-shrink: 0"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.125rem;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="font-size: 1rem; font-weight: 600; line-height: 1.3"
+                >
+                  Auth flows
+                </div>
+                <div class="muted" style="font-size: 0.75rem">
+                  5 designs · edited 2 weeks ago
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.375rem; flex-wrap: wrap">
+                <span class="Tag">security</span><span class="Tag">web</span>
+              </div>
+            </div>
+            <div
+              class="Island"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.875rem;
+                padding: 1.25rem;
+                box-sizing: border-box;
+                min-height: 11.5rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                "
+              >
+                <div
+                  style="
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 0.625rem;
+                    background: var(--pc-yellow-bg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                  "
+                >
+                  🗺️
+                </div>
+                <div
+                  class="IconButton IconButton--ghost"
+                  style="color: var(--color-gray-50)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="width: 1rem; height: 1rem; flex-shrink: 0"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.125rem;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="font-size: 1rem; font-weight: 600; line-height: 1.3"
+                >
+                  Q4 roadmap
+                </div>
+                <div class="muted" style="font-size: 0.75rem">
+                  2 designs · edited 3 weeks ago
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.375rem; flex-wrap: wrap">
+                <span class="Tag">planning</span>
+              </div>
+            </div>
+            <div
+              class="Island"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.875rem;
+                padding: 1.25rem;
+                box-sizing: border-box;
+                min-height: 11.5rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                "
+              >
+                <div
+                  style="
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 0.625rem;
+                    background: var(--pc-pink-bg);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.5rem;
+                    line-height: 1;
+                  "
+                >
+                  🧪
+                </div>
+                <div
+                  class="IconButton IconButton--ghost"
+                  style="color: var(--color-gray-50)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="width: 1rem; height: 1rem; flex-shrink: 0"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                    <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.125rem;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="font-size: 1rem; font-weight: 600; line-height: 1.3"
+                >
+                  Growth experiments
+                </div>
+                <div class="muted" style="font-size: 0.75rem">
+                  6 designs · edited last month
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.375rem; flex-wrap: wrap">
+                <span class="Tag">growth</span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="muted"
+            style="
+              font-size: 0.75rem;
+              display: flex;
+              align-items: center;
+              gap: 0.375rem;
+              margin-top: 0.5rem;
+            "
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 0.875rem; height: 0.875rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"
+              ></path>
+              <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
+              <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path></svg
+            ><span
+              >Everything is stored in this browser (IndexedDB). Export a backup
+              to keep a copy on disk.</span
+            >
+          </div>
+        </div>
+      </div>
+    </x-dc>
+  </body>
+</html>

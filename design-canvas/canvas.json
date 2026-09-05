@@ -1,0 +1,20 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "Dashboard", "x": 0, "y": 0, "w": 1440, "h": 900 },
+    { "file": "ProjectPage.dc.html", "title": "Project page", "x": 1540, "y": 0, "w": 1440, "h": 900 },
+    { "file": "Editor.dc.html", "title": "Editor + Designs sidebar", "x": 3080, "y": 0, "w": 1440, "h": 900 },
+    { "file": "DashboardDark.dc.html", "title": "Dashboard (dark)", "x": 0, "y": 1040, "w": 1440, "h": 900 },
+    { "file": "Dialogs.dc.html", "title": "Dialogs & menus", "x": 1540, "y": 1040, "w": 1440, "h": 900 }
+  ],
+  "annotations": [
+    {
+      "id": "brief",
+      "x": 0,
+      "y": -220,
+      "w": 520,
+      "text": "Excalidraw Projects — UI design\n\nFlow: Dashboard (projects) → Project page (designs) → Editor (stock Excalidraw + our breadcrumb + 'Designs' sidebar).\n\nEvery token, radius, shadow and control size is lifted from Excalidraw's own theme.scss / component styles, so the dashboard reads as part of the editor. Dark mode is the same markup with Excalidraw's dark tokens."
+    },
+    { "id": "editor-note", "x": 3080, "y": -140, "w": 420, "text": "Editor: Excalidraw's own UI is untouched. We only add the top-right breadcrumb island + 'Designs' trigger (renderTopRightUI) and a custom <Sidebar> listing the project's designs." }
+  ],
+  "launch": { "view": "canvas" }
+}

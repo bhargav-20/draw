@@ -1,0 +1,163 @@
+.excalidraw.ProjectsApp {
+  .DesignCard {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+    transition: box-shadow 120ms ease-out;
+
+    &:hover,
+    &:has(.DesignCard__link:focus-visible) {
+      box-shadow: var(--shadow-island-stronger);
+    }
+
+    &:has(.DesignCard__link:focus-visible) {
+      box-shadow: var(--shadow-island), 0 0 0 2px var(--color-brand-hover);
+    }
+
+    // the title link is stretched over the whole card…
+    &__link {
+      display: block;
+      color: inherit;
+      font-weight: inherit;
+      text-decoration: none;
+      outline: none;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+      }
+    }
+
+    // …and the interactive bits are raised above it
+    &__actions,
+    &__tags .Tag--interactive {
+      position: relative;
+      z-index: 1;
+    }
+
+    &--archived {
+      opacity: 0.65;
+    }
+
+    &--dragging {
+      opacity: 0.9;
+      box-shadow: var(--shadow-island-stronger);
+    }
+
+    &__thumbnail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--card-thumbnail-height);
+      padding: 0.75rem;
+      box-sizing: border-box;
+      background: var(--island-bg-color);
+      border-bottom: 1px solid var(--color-surface-high);
+      overflow: hidden;
+    }
+
+    &__image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 0.25rem;
+      user-select: none;
+    }
+
+    &__placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--color-gray-40);
+      font-size: 0.75rem;
+
+      svg {
+        width: 1.75rem;
+        height: 1.75rem;
+        stroke-dasharray: 3 2;
+      }
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.875rem 1rem 1rem;
+    }
+
+    &__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    &__text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+      min-width: 0;
+    }
+
+    &__title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--color-on-surface);
+    }
+
+    &__meta {
+      font-size: 0.75rem;
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      gap: 0.125rem;
+      margin-right: -0.5rem;
+      flex-shrink: 0;
+    }
+
+    &__handle {
+      cursor: grab;
+      opacity: 0;
+      transition: opacity 120ms ease-out;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    &:hover &__handle,
+    &:focus-within &__handle,
+    &__handle:focus-visible {
+      opacity: 1;
+    }
+
+    &__tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+    }
+  }
+
+  // thumbnails are rendered light; invert them like Excalidraw does for the canvas
+  &.theme--dark .DesignCard__image {
+    filter: var(--theme-filter);
+  }
+
+  @media (hover: none) {
+    .DesignCard__handle {
+      opacity: 1;
+    }
+  }
+}

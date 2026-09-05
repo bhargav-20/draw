@@ -1,0 +1,6 @@
+// Excalidraw needs a parent with an explicit size – the editor page is the
+// whole viewport.
+.EditorPage {
+  position: fixed;
+  inset: 0;
+}

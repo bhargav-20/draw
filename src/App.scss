@@ -1,0 +1,34 @@
+.excalidraw.ProjectsApp-portal {
+  // persistent "reload this tab" notice – above everything, including the editor
+  .DbBlockedBanner {
+    position: fixed;
+    top: calc(var(--space-factor) * 4);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--zIndex-toast);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--space-factor) * 3);
+    max-width: min(32rem, calc(100vw - 2rem));
+    padding: calc(var(--space-factor) * 2.5) calc(var(--space-factor) * 3)
+      calc(var(--space-factor) * 2.5) calc(var(--space-factor) * 3.5);
+    font-size: 0.875rem;
+    color: var(--color-on-surface);
+    box-shadow: var(--shadow-island);
+
+    &__icon {
+      display: flex;
+      flex-shrink: 0;
+      color: var(--color-warning-dark);
+
+      svg {
+        width: 1.125rem;
+        height: 1.125rem;
+      }
+    }
+
+    &__message {
+      flex: 1;
+    }
+  }
+}

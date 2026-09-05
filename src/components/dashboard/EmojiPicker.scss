@@ -1,0 +1,62 @@
+// rendered inside dialogs (portal) – scoped to `.excalidraw`, not `.ProjectsApp`
+.excalidraw {
+  .EmojiPicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    &__option,
+    &__custom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      box-sizing: border-box;
+      border: 1px solid transparent;
+      border-radius: var(--border-radius-lg);
+      background: var(--color-surface-low);
+      color: var(--color-on-surface);
+      font-family: var(--ui-font);
+      font-size: 1.375rem;
+      line-height: 1;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--color-surface-high);
+      }
+
+      &:focus-visible {
+        outline: transparent;
+        box-shadow: 0 0 0 1px var(--color-brand-hover);
+      }
+
+      &--selected {
+        box-shadow: 0 0 0 2px var(--color-brand-active);
+
+        &:focus-visible {
+          box-shadow: 0 0 0 2px var(--color-brand-active);
+        }
+      }
+    }
+
+    &__custom {
+      width: 3.75rem;
+      text-align: center;
+      font-size: 1.375rem;
+      cursor: text;
+
+      &::placeholder {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--color-gray-50);
+      }
+
+      &:focus {
+        outline: transparent;
+        border-color: var(--color-brand-active);
+      }
+    }
+  }
+}

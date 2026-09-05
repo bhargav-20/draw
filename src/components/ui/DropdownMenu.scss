@@ -1,0 +1,73 @@
+.excalidraw.ProjectsApp-portal {
+  .ProjectsApp-menu {
+    max-width: 20rem;
+    min-width: 12rem;
+    z-index: 1;
+
+    .dropdown-menu-container {
+      padding: 0.5rem;
+      border-radius: var(--border-radius-lg);
+      max-height: min(28rem, calc(100vh - 2rem));
+      overflow-y: auto;
+    }
+
+    .dropdown-menu-item {
+      font-family: var(--ui-font);
+      color: var(--color-on-surface);
+      text-align: left;
+
+      &__icon {
+        display: flex;
+        align-items: center;
+        color: var(--icon-fill-color);
+
+        svg {
+          width: 1rem;
+          height: 1rem;
+        }
+      }
+
+      &:focus-visible {
+        outline: transparent;
+        box-shadow: 0 0 0 1px var(--color-brand-hover);
+      }
+
+      &--danger {
+        color: var(--color-danger-color);
+
+        .dropdown-menu-item__icon {
+          color: var(--color-danger-color);
+        }
+      }
+    }
+
+    .dropdown-menu-separator {
+      height: 1px;
+      margin: 0.375rem 0;
+      background: var(--default-border-color);
+    }
+
+    .dropdown-menu-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .dropdown-menu-group-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-gray-60);
+      margin: 0.375rem 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  &.theme--dark .ProjectsApp-menu .dropdown-menu-item--danger {
+    color: var(--color-danger);
+
+    .dropdown-menu-item__icon {
+      color: var(--color-danger);
+    }
+  }
+}

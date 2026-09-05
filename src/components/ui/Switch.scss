@@ -1,0 +1,17 @@
+.excalidraw {
+  .SwitchField {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: var(--color-on-surface);
+
+    .Switch {
+      flex-shrink: 0;
+    }
+  }
+}

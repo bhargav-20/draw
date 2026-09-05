@@ -1,0 +1,77 @@
+.excalidraw.ProjectsApp {
+  .DesignResults {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+
+    &__title {
+      margin: 0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-gray-60);
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+      gap: 0.75rem;
+    }
+  }
+
+  .DesignResult {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: box-shadow 120ms ease-out;
+
+    &:hover {
+      box-shadow: var(--shadow-island-stronger);
+    }
+
+    &:focus-visible {
+      outline: transparent;
+      box-shadow: var(--shadow-island), 0 0 0 2px var(--color-brand-hover);
+    }
+
+    &__emoji {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: var(--border-radius-md);
+      font-size: 1.125rem;
+      line-height: 1;
+    }
+
+    &__text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      flex-grow: 1;
+    }
+
+    &__name {
+      font-weight: 600;
+    }
+
+    &__project {
+      font-size: 0.75rem;
+    }
+
+    &__tags {
+      flex-shrink: 0;
+      flex-wrap: nowrap;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+.excalidraw {
+  // upstream's `.ExcTextField > svg` is positioned for a label-less field; keep
+  // the icon aligned with the input box when a label is present as well
+  .ExcTextField--hasIcon {
+    &.ExcTextField--compact {
+      > svg {
+        top: auto;
+        bottom: 0.5rem;
+        transform: none;
+        width: 1.125rem;
+        height: 1.125rem;
+      }
+    }
+  }
+
+  .ExcTextField--compact .ExcTextField__input {
+    height: 2.25rem;
+
+    input {
+      font-size: 0.875rem;
+    }
+  }
+
+  .ExcTextField__input input::placeholder {
+    color: var(--ExcTextField--placeholder);
+  }
+}

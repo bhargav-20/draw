@@ -1,0 +1,6 @@
+dist
+dev-dist
+reference
+node_modules
+docs
+yarn.lock

@@ -1,0 +1,82 @@
+.excalidraw {
+  .EditorTopRightUI {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: var(--lg-button-size);
+    box-sizing: border-box;
+    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+    max-width: min(28rem, calc(100vw - 20rem));
+    font-family: var(--ui-font);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: var(--color-on-surface);
+
+    &__emoji {
+      font-size: 1rem;
+      line-height: 1;
+      margin-left: 0.125rem;
+    }
+
+    &__project,
+    &__separator {
+      color: var(--color-gray-60);
+    }
+
+    &__project {
+      max-width: 10rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &__design {
+      appearance: none;
+      margin: 0;
+      padding: 0.125rem 0.375rem;
+      border: 0;
+      border-radius: var(--border-radius-md);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      letter-spacing: inherit;
+      cursor: text;
+      max-width: 14rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:hover {
+        background: var(--button-hover-bg);
+      }
+
+      &:focus-visible {
+        outline: transparent;
+        box-shadow: 0 0 0 1px var(--color-brand-hover);
+      }
+    }
+
+    &__rename {
+      width: 12rem;
+
+      .ExcTextField__input {
+        height: 1.75rem;
+
+        input {
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: 0.4px;
+        }
+      }
+    }
+
+    &__trigger .sidebar-trigger__label {
+      white-space: nowrap;
+    }
+  }
+
+  &.excalidraw--mobile .EditorTopRightUI {
+    padding: 0.25rem;
+  }
+}

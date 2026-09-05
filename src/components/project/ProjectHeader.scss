@@ -1,0 +1,131 @@
+.excalidraw.ProjectsApp {
+  .ProjectHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    &__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      align-self: flex-start;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      color: var(--color-gray-60);
+      text-decoration: none;
+
+      svg {
+        width: 0.875rem;
+        height: 0.875rem;
+      }
+
+      &:hover {
+        color: var(--color-on-surface);
+        text-decoration: none;
+      }
+    }
+
+    &__row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    &__emoji {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.75rem;
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    &__text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 0;
+      flex: 1 1 16rem;
+    }
+
+    &__title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 0;
+    }
+
+    &__name {
+      margin: 0;
+      min-width: 0;
+      overflow: hidden;
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    &__name-button {
+      display: block;
+      width: 100%;
+      padding: 0 0.25rem;
+      margin: 0;
+      border: 0;
+      border-radius: var(--border-radius-md);
+      background: transparent;
+      font: inherit;
+      color: inherit;
+      text-align: left;
+      cursor: text;
+
+      &:hover {
+        background: var(--color-surface-high);
+      }
+
+      &:focus-visible {
+        outline: transparent;
+        box-shadow: 0 0 0 1px var(--color-brand-hover);
+      }
+    }
+
+    &__rename {
+      color: var(--color-gray-40);
+    }
+
+    &__name-input {
+      width: min(28rem, 100%);
+
+      .ExcTextField__input {
+        height: 2.5rem;
+
+        input {
+          font-size: 1.25rem;
+          font-weight: 600;
+        }
+      }
+    }
+
+    &__meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+    }
+
+    &__spacer {
+      flex-grow: 1;
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+  }
+}

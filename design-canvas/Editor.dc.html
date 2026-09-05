@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="./support.js"></script>
+  </head>
+  <body>
+    <x-dc>
+      <helmet>
+        <title>Editor with Designs sidebar</title>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Caveat:wght@500&display=swap"
+        />
+        <style>
+          body {
+            margin: 0;
+          }
+          .app {
+            /* ---- verbatim from packages/excalidraw/css/theme.scss (.excalidraw) ---- */
+            --ui-font: Assistant, system-ui, BlinkMacSystemFont, -apple-system,
+              "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --hand-font: Caveat, "Comic Sans MS", cursive;
+            --color-primary: #6965db;
+            --color-primary-darker: #5b57d1;
+            --color-primary-darkest: #4a47b1;
+            --color-primary-light: #e3e2fe;
+            --color-primary-light-darker: #d7d5ff;
+            --color-primary-hover: #5753d0;
+            --color-brand-hover: #5753d0;
+            --color-brand-active: #4440bf;
+            --color-on-primary-container: #030064;
+            --color-surface-primary-container: #e0dfff;
+            --color-surface-high: #f1f0ff;
+            --color-surface-mid: #f6f6f9;
+            --color-surface-low: #ececf4;
+            --color-surface-lowest: #ffffff;
+            --color-on-surface: #1b1b1f;
+            --color-border-outline: #767680;
+            --color-border-outline-variant: #c5c5d0;
+            --color-gray-10: #f5f5f5;
+            --color-gray-20: #ebebeb;
+            --color-gray-30: #d6d6d6;
+            --color-gray-40: #b8b8b8;
+            --color-gray-50: #999999;
+            --color-gray-60: #7a7a7a;
+            --color-gray-70: #5c5c5c;
+            --color-gray-80: #3d3d3d;
+            --color-gray-85: #242424;
+            --color-gray-90: #1e1e1e;
+            --color-gray-100: #121212;
+            --color-danger: #db6965;
+            --color-danger-dark: #db6965;
+            --color-danger-text: black;
+            --color-danger-background: #fff0f0;
+            --color-danger-color: #700000;
+            --color-logo-text: #190064;
+            --island-bg-color: #ffffff;
+            --default-bg-color: #fff;
+            --dialog-border-color: var(--color-gray-20);
+            --input-bg-color: #fff;
+            --input-border-color: #ced4da;
+            --link-color: #1c7ed6;
+            --keybinding-color: var(--color-gray-40);
+            --text-primary-color: var(--color-on-surface);
+            --icon-fill-color: var(--color-on-surface);
+            --default-border-color: var(--color-surface-high);
+            --button-hover-bg: var(--color-surface-high);
+            --sidebar-border-color: var(--color-surface-high);
+            --sidebar-bg-color: var(--island-bg-color);
+            --shadow-island: 0px 0px 1px 0px rgba(0, 0, 0, 0.17),
+              0px 0px 3px 0px rgba(0, 0, 0, 0.08),
+              0px 7px 14px 0px rgba(0, 0, 0, 0.05);
+            --shadow-island-stronger: 0px 0px 1px 0px rgba(0, 0, 0, 0.17),
+              0px 0px 3px 0px rgba(0, 0, 0, 0.08),
+              0px 7px 14px 0px rgb(0 0 0 / 18%);
+            --modal-shadow: 0px 100px 80px rgba(0, 0, 0, 0.07),
+              0px 41.7776px 33.4221px rgba(0, 0, 0, 0.0503198),
+              0px 22.3363px 17.869px rgba(0, 0, 0, 0.0417275),
+              0px 12.5216px 10.0172px rgba(0, 0, 0, 0.035),
+              0px 6.6501px 5.32008px rgba(0, 0, 0, 0.0282725),
+              0px 2.76726px 2.21381px rgba(0, 0, 0, 0.0196802);
+            --sidebar-shadow: var(--modal-shadow);
+            --space-factor: 0.25rem;
+            --border-radius-md: 0.375rem;
+            --border-radius-lg: 0.5rem;
+            --default-button-size: 2rem;
+            --default-icon-size: 1rem;
+            --lg-button-size: 2.25rem;
+            --lg-icon-size: 1rem;
+            --editor-container-padding: 1rem;
+            --right-sidebar-width: 302px;
+            /* ---- ExcTextField tokens (components/TextField.scss) ---- */
+            --ExcTextField--color: var(--color-on-surface);
+            --ExcTextField--background: var(--color-surface-low);
+            --ExcTextField--border: var(--color-gray-20);
+            --ExcTextField--border-hover: var(--color-brand-hover);
+            --ExcTextField--border-active: var(--color-brand-active);
+            --ExcTextField--placeholder: var(--color-border-outline-variant);
+            /* ---- app-only tokens: project accents (open-color 0 / 7) ---- */
+            --pc-gray-bg: #f1f3f5;
+            --pc-gray: #868e96;
+            --pc-violet-bg: #f3f0ff;
+            --pc-violet: #7048e8;
+            --pc-blue-bg: #e7f5ff;
+            --pc-blue: #1c7ed6;
+            --pc-teal-bg: #e6fcf5;
+            --pc-teal: #0ca678;
+            --pc-green-bg: #ebfbee;
+            --pc-green: #37b24d;
+            --pc-yellow-bg: #fff9db;
+            --pc-yellow: #f59f00;
+            --pc-orange-bg: #fff4e6;
+            --pc-orange: #f76707;
+            --pc-red-bg: #fff5f5;
+            --pc-red: #e03131;
+            --pc-pink-bg: #fff0f6;
+            --pc-pink: #d6336c;
+
+            font-family: var(--ui-font);
+            color: var(--text-primary-color);
+            background: var(--default-bg-color);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+          }
+          .app.theme--dark {
+            /* ---- verbatim from .excalidraw.theme--dark ---- */
+            --color-primary: #a8a5ff;
+            --color-primary-darker: #b2aeff;
+            --color-primary-darkest: #beb9ff;
+            --color-primary-light: #4f4d6f;
+            --color-primary-light-darker: #43415e;
+            --color-primary-hover: #bbb8ff;
+            --color-brand-hover: #bbb8ff;
+            --color-brand-active: #d0ccff;
+            --color-on-primary-container: #e0dfff;
+            --color-surface-primary-container: #403e6a;
+            --color-surface-high: #2e2d39;
+            --color-surface-low: hsl(240, 8%, 15%);
+            --color-surface-mid: hsl(240 6% 10%);
+            --color-surface-lowest: hsl(0, 0%, 7%);
+            --color-on-surface: #e3e3e8;
+            --color-border-outline: #8e8d9c;
+            --color-border-outline-variant: #46464f;
+            --color-danger: #ffa8a5;
+            --color-danger-dark: #672120;
+            --color-danger-text: #fbcbcc;
+            --color-danger-background: #fbcbcc;
+            --color-danger-color: #261919;
+            --color-logo-text: #e2dfff;
+            --island-bg-color: #232329;
+            --default-bg-color: #121212;
+            --dialog-border-color: var(--color-gray-80);
+            --input-bg-color: #121212;
+            --input-border-color: #2e2e2e;
+            --link-color: #4dabf7;
+            --keybinding-color: var(--color-gray-60);
+            --ExcTextField--border: var(--color-border-outline-variant);
+            --pc-gray-bg: #2b2d31;
+            --pc-violet-bg: #2f2a4a;
+            --pc-blue-bg: #1f2f43;
+            --pc-teal-bg: #163a30;
+            --pc-green-bg: #1d3a24;
+            --pc-yellow-bg: #3d3416;
+            --pc-orange-bg: #3f2a17;
+            --pc-red-bg: #40201f;
+            --pc-pink-bg: #3f1f2c;
+          }
+          a {
+            color: var(--link-color);
+            text-decoration: none;
+          }
+          a:hover {
+            color: var(--color-brand-hover);
+            text-decoration: underline;
+          }
+          /* ---- Island (components/Island.scss) ---- */
+          .Island {
+            box-sizing: border-box;
+            background-color: var(--island-bg-color);
+            box-shadow: var(--shadow-island);
+            border-radius: var(--border-radius-lg);
+            position: relative;
+          }
+          /* ---- FilledButton (components/FilledButton.scss) ---- */
+          .ExcButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            gap: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            font-family: var(--ui-font);
+            font-weight: 600;
+            font-size: 0.75rem;
+            min-height: 2.5rem;
+            padding: 0.5rem 1rem;
+            letter-spacing: normal;
+            user-select: none;
+            box-sizing: border-box;
+            cursor: pointer;
+            white-space: nowrap;
+          }
+          .ExcButton--large {
+            font-size: 0.875rem;
+            min-height: 3rem;
+            padding: 0.5rem 1.5rem;
+            letter-spacing: 0.4px;
+            gap: 0.75rem;
+          }
+          .ExcButton--filled {
+            color: var(--color-surface-lowest);
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+          }
+          .ExcButton--outlined {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+            background: transparent;
+          }
+          .ExcButton--danger {
+            color: var(--color-danger);
+            border-color: var(--color-danger);
+            background: transparent;
+          }
+          .ExcButton svg {
+            width: 1.25rem;
+            height: 1.25rem;
+          }
+          /* ---- outline icon button / dropdown-menu-button (DropdownMenu.scss) ---- */
+          .IconButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: var(--lg-button-size);
+            height: var(--lg-button-size);
+            box-sizing: border-box;
+            border: 1px solid var(--default-border-color);
+            border-radius: var(--border-radius-lg);
+            background-color: var(--color-surface-mid);
+            color: var(--color-on-surface);
+            cursor: pointer;
+            flex-shrink: 0;
+          }
+          .IconButton svg {
+            width: var(--lg-icon-size);
+            height: var(--lg-icon-size);
+          }
+          .IconButton--ghost {
+            background: transparent;
+            border-color: transparent;
+            width: var(--default-button-size);
+            height: var(--default-button-size);
+          }
+          /* ---- ToolIcon (components/ToolIcon.scss) ---- */
+          .ToolIcon {
+            width: var(--lg-button-size);
+            height: var(--lg-button-size);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-lg);
+            color: var(--icon-fill-color);
+            position: relative;
+            box-sizing: border-box;
+          }
+          .ToolIcon svg {
+            width: var(--lg-icon-size);
+            height: var(--lg-icon-size);
+          }
+          .ToolIcon--checked {
+            background: var(--color-surface-primary-container);
+          }
+          .ToolIcon--checked svg {
+            color: var(--color-on-primary-container);
+          }
+          .ToolIcon__keybinding {
+            position: absolute;
+            bottom: 2px;
+            right: 3px;
+            font-size: 0.625rem;
+            color: var(--keybinding-color);
+          }
+          /* ---- ExcTextField (components/TextField.scss) ---- */
+          .ExcTextField {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+          }
+          .ExcTextField__label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            line-height: 150%;
+            margin-bottom: 0.25rem;
+          }
+          .ExcTextField__input {
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            height: 3rem;
+            background: var(--ExcTextField--background);
+            border: 1px solid var(--ExcTextField--border);
+            border-radius: 0.5rem;
+            padding: 0 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 150%;
+            color: var(--ExcTextField--color);
+            gap: 0.5rem;
+          }
+          .ExcTextField__input--placeholder {
+            color: var(--ExcTextField--placeholder);
+          }
+          .ExcTextField__input--active {
+            border-color: var(--ExcTextField--border-active);
+          }
+          .ExcTextField--hasIcon .ExcTextField__input {
+            padding-left: 2.5rem;
+          }
+          .ExcTextField > svg {
+            position: absolute;
+            left: 0.75rem;
+            bottom: 0.875rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--color-gray-40);
+          }
+          .ExcTextField--compact .ExcTextField__input {
+            height: 2.25rem;
+            font-size: 0.875rem;
+          }
+          .ExcTextField--compact > svg {
+            bottom: 0.5rem;
+            width: 1.125rem;
+            height: 1.125rem;
+          }
+          /* ---- Switch (components/Switch.scss) ---- */
+          .Switch {
+            position: relative;
+            box-sizing: border-box;
+            width: 40px;
+            height: 20px;
+            border-radius: 12px;
+            background: var(--island-bg-color);
+            border: 1px solid var(--color-border-outline);
+            flex-shrink: 0;
+          }
+          .Switch::before {
+            content: "";
+            position: absolute;
+            border-radius: 100%;
+            width: 10px;
+            height: 10px;
+            top: 4px;
+            left: 4px;
+            background: var(--color-on-surface);
+          }
+          .Switch--on {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+          }
+          .Switch--on::before {
+            width: 14px;
+            height: 14px;
+            left: 22px;
+            top: 2px;
+            background: var(--island-bg-color);
+          }
+          /* ---- Tag chip (app) ---- */
+          .Tag {
+            display: inline-flex;
+            align-items: center;
+            height: 1.25rem;
+            padding: 0 0.5rem;
+            border-radius: var(--border-radius-md);
+            background: var(--color-surface-high);
+            color: var(--color-on-primary-container);
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1;
+            white-space: nowrap;
+          }
+          /* ---- Dialog (components/Modal.scss + Dialog.scss) ---- */
+          .Modal__content {
+            background: var(--island-bg-color);
+            border: 1px solid var(--dialog-border-color);
+            box-shadow: var(--modal-shadow);
+            border-radius: 0.75rem;
+            box-sizing: border-box;
+            padding: 2.5rem;
+            position: relative;
+          }
+          .Dialog__title {
+            margin: 0 0 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--dialog-border-color);
+            padding: 0 0 0.75rem;
+          }
+          .Dialog__close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.5rem;
+            color: var(--color-gray-40);
+            width: 1.5rem;
+            height: 1.5rem;
+          }
+          .Dialog__action-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            height: 3rem;
+            border: 1px solid var(--default-border-color);
+            border-radius: var(--border-radius-lg);
+            background: transparent;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            color: inherit;
+            box-sizing: border-box;
+            cursor: pointer;
+          }
+          .Dialog__action-button--primary {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: #fff;
+          }
+          .Dialog__action-button--danger {
+            background: var(--color-danger);
+            border-color: var(--color-danger);
+            color: #fff;
+          }
+          /* ---- dropdown menu (components/dropdownMenu/DropdownMenu.scss) ---- */
+          .dropdown-menu-container {
+            background: var(--island-bg-color);
+            box-shadow: var(--shadow-island);
+            border-radius: var(--border-radius-lg);
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 12rem;
+          }
+          .dropdown-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            height: 2rem;
+            padding: 0 0.5rem;
+            font-size: 0.875rem;
+            border-radius: var(--border-radius-md);
+            color: var(--color-on-surface);
+            box-sizing: border-box;
+          }
+          .dropdown-menu-item svg {
+            width: 1rem;
+            height: 1rem;
+          }
+          .dropdown-menu-item--selected {
+            background: var(--color-primary-light);
+          }
+          .dropdown-menu-item--hover {
+            background: var(--button-hover-bg);
+          }
+          .dropdown-menu-item--danger {
+            color: var(--color-danger-color);
+          }
+          .muted {
+            color: var(--color-gray-60);
+          }
+          .sketch {
+            font-family: var(--hand-font);
+            color: var(--color-on-surface);
+          }
+        </style>
+      </helmet>
+      <div
+        class="app"
+        style="
+          width: 1440px;
+          height: 900px;
+          box-sizing: border-box;
+          overflow: hidden;
+          background: var(--default-bg-color);
+          position: relative;
+        "
+      >
+        <svg
+          viewBox="0 0 1100 800"
+          fill="none"
+          stroke="#1e1e1e"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          style="
+            position: absolute;
+            left: 60px;
+            top: 90px;
+            width: 1000px;
+            height: 700px;
+          "
+        >
+          <rect x="120" y="120" width="220" height="140" rx="6"></rect>
+          <rect x="480" y="120" width="220" height="140" rx="6"></rect>
+          <rect
+            x="480"
+            y="360"
+            width="220"
+            height="140"
+            rx="6"
+            stroke="#e03131"
+          ></rect>
+          <rect
+            x="120"
+            y="360"
+            width="220"
+            height="140"
+            rx="6"
+            fill="#e0dfff"
+            fill-opacity="0.6"
+          ></rect>
+          <path d="M340 190 H478"></path>
+          <path d="M470 182 l8 8 -8 8"></path>
+          <path d="M590 260 V358"></path>
+          <path d="M582 350 l8 8 8 -8"></path>
+          <path d="M480 430 H342"></path>
+          <path d="M350 422 l-8 8 8 8"></path>
+          <path d="M230 360 V262"></path>
+          <path d="M222 270 l8 -8 8 8"></path>
+          <rect x="820" y="230" width="180" height="260" rx="14"></rect>
+          <path d="M850 280 h120 M850 310 h80 M850 340 h100"></path>
+          <rect
+            x="850"
+            y="430"
+            width="120"
+            height="32"
+            rx="8"
+            fill="#6965db"
+            fill-opacity="0.85"
+            stroke="none"
+          ></rect>
+        </svg>
+        <div
+          class="sketch"
+          style="position: absolute; left: 250px; top: 260px; font-size: 22px"
+        >
+          Cart
+        </div>
+        <div
+          class="sketch"
+          style="position: absolute; left: 590px; top: 260px; font-size: 22px"
+        >
+          Address
+        </div>
+        <div
+          class="sketch"
+          style="position: absolute; left: 570px; top: 500px; font-size: 22px"
+        >
+          Payment
+        </div>
+        <div
+          class="sketch"
+          style="position: absolute; left: 200px; top: 500px; font-size: 22px"
+        >
+          Confirmation
+        </div>
+        <div
+          class="sketch"
+          style="
+            position: absolute;
+            left: 905px;
+            top: 300px;
+            font-size: 18px;
+            color: #7a7a7a;
+          "
+        >
+          side cart
+        </div>
+        <div
+          class="sketch"
+          style="
+            position: absolute;
+            left: 300px;
+            top: 620px;
+            font-size: 20px;
+            color: #7a7a7a;
+          "
+        >
+          v3 — cart stays visible during payment
+        </div>
+        <div
+          class="IconButton"
+          style="position: absolute; left: 1rem; top: 1rem"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="width: 1rem; height: 1rem; flex-shrink: 0"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M4 6l16 0"></path>
+            <path d="M4 12l16 0"></path>
+            <path d="M4 18l16 0"></path>
+          </svg>
+        </div>
+        <div
+          class="Island"
+          style="
+            position: absolute;
+            left: 50%;
+            top: 1rem;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 0.125rem;
+            padding: 0.25rem;
+          "
+        >
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"
+              ></path>
+              <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
+              <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path></svg
+            ><span class="ToolIcon__keybinding"></span>
+          </div>
+          <div
+            style="
+              width: 1px;
+              height: 1.5rem;
+              background: var(--default-border-color);
+              margin: 0 0.25rem;
+            "
+          ></div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M8 13v-8.5a1.5 1.5 0 0 1 3 0v7.5"></path>
+              <path d="M11 11.5v-2a1.5 1.5 0 0 1 3 0v2.5"></path>
+              <path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5"></path>
+              <path
+                d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7a69.74 69.74 0 0 1 -.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47"
+              ></path></svg
+            ><span class="ToolIcon__keybinding">H</span>
+          </div>
+          <div class="ToolIcon ToolIcon--checked">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M7.904 17.563a1.2 1.2 0 0 0 2.228 .308l2.09 -3.896l4.907 4.907a1.067 1.067 0 0 0 1.509 0l1.128 -1.128a1.067 1.067 0 0 0 0 -1.509l-4.907 -4.907l3.896 -2.09a1.2 1.2 0 0 0 -.308 -2.228l-13.563 -3.02l3.02 13.563z"
+              ></path></svg
+            ><span class="ToolIcon__keybinding">1</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"
+              ></path></svg
+            ><span class="ToolIcon__keybinding">2</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M10.5 4.5l-6 6a2.12 2.12 0 0 0 0 3l6 6a2.12 2.12 0 0 0 3 0l6 -6a2.12 2.12 0 0 0 0 -3l-6 -6a2.12 2.12 0 0 0 -3 0z"
+              ></path></svg
+            ><span class="ToolIcon__keybinding">3</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M12 12m-9 0a9 7 0 1 0 18 0a9 7 0 1 0 -18 0"></path></svg
+            ><span class="ToolIcon__keybinding">4</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M5 12l14 0"></path>
+              <path d="M15 16l4 -4"></path>
+              <path d="M15 8l4 4"></path></svg
+            ><span class="ToolIcon__keybinding">5</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M4 20l16 -16"></path></svg
+            ><span class="ToolIcon__keybinding">6</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"
+              ></path>
+              <path d="M13.5 6.5l4 4"></path></svg
+            ><span class="ToolIcon__keybinding">7</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M6 4l12 0"></path>
+              <path d="M12 4l0 16"></path>
+              <path d="M9 20l6 0"></path></svg
+            ><span class="ToolIcon__keybinding">8</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 8h.01"></path>
+              <path
+                d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z"
+              ></path>
+              <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5"></path>
+              <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3"></path></svg
+            ><span class="ToolIcon__keybinding">9</span>
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M19 20h-10.5l-4.21 -4.3a1 1 0 0 1 0 -1.41l10 -10a1 1 0 0 1 1.41 0l5 5a1 1 0 0 1 0 1.41l-9.2 9.3"
+              ></path>
+              <path d="M18 13.3l-6.3 -6.3"></path></svg
+            ><span class="ToolIcon__keybinding">0</span>
+          </div>
+        </div>
+        <div
+          style="
+            position: absolute;
+            right: calc(var(--right-sidebar-width) - 0.5rem + 1rem);
+            top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          "
+        >
+          <div
+            class="Island"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 0.25rem;
+              padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+              height: 2.25rem;
+              box-sizing: border-box;
+            "
+          >
+            <div class="IconButton IconButton--ghost">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1rem; height: 1rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M5 12l14 0"></path>
+                <path d="M5 12l6 6"></path>
+                <path d="M5 12l6 -6"></path>
+              </svg>
+            </div>
+            <span style="font-size: 1rem; line-height: 1">🛒</span
+            ><span
+              class="muted"
+              style="
+                font-size: 0.75rem;
+                font-weight: 600;
+                letter-spacing: 0.4px;
+              "
+              >Checkout redesign</span
+            ><span class="muted" style="font-size: 0.75rem">/</span
+            ><span
+              style="
+                font-size: 0.75rem;
+                font-weight: 600;
+                letter-spacing: 0.4px;
+              "
+              >v3 · side cart</span
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              height: 2.25rem;
+              padding: 0 0.75rem;
+              border-radius: var(--border-radius-lg);
+              background: var(--color-surface-low);
+              box-shadow: 0 0 0 1px var(--color-surface-lowest);
+              font-size: 0.75rem;
+              font-weight: 600;
+              letter-spacing: 0.4px;
+              box-sizing: border-box;
+              color: var(--color-on-primary-container);
+            "
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"
+              ></path>
+              <path d="M15 4l0 16"></path></svg
+            ><span>Designs</span>
+          </div>
+        </div>
+        <div
+          class="Island"
+          style="
+            position: absolute;
+            left: 1rem;
+            bottom: 1rem;
+            display: flex;
+            align-items: center;
+            padding: 0.25rem;
+          "
+        >
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M5 12l14 0"></path>
+            </svg>
+          </div>
+          <div
+            style="
+              min-width: 3.5rem;
+              text-align: center;
+              font-size: 0.75rem;
+              font-weight: 600;
+            "
+          >
+            100%
+          </div>
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M12 5l0 14"></path>
+              <path d="M5 12l14 0"></path>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="Island"
+          style="
+            position: absolute;
+            left: 9.25rem;
+            bottom: 1rem;
+            display: flex;
+            align-items: center;
+            padding: 0.25rem;
+          "
+        >
+          <div class="ToolIcon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M9 14l-4 -4l4 -4"></path>
+              <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
+            </svg>
+          </div>
+          <div class="ToolIcon" style="color: var(--color-gray-40)">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 1rem; height: 1rem; flex-shrink: 0"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M15 14l4 -4l-4 -4"></path>
+              <path d="M19 10h-11a4 4 0 1 0 0 8h1"></path>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="IconButton"
+          style="
+            position: absolute;
+            right: calc(var(--right-sidebar-width) - 0.5rem + 1rem);
+            bottom: 1rem;
+            border-radius: 100%;
+            background: var(--island-bg-color);
+            box-shadow: var(--shadow-island);
+            border: none;
+          "
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="width: 1rem; height: 1rem; flex-shrink: 0"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+            <path d="M12 17l0 .01"></path>
+            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4"></path>
+          </svg>
+        </div>
+        <div
+          style="
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: calc(var(--right-sidebar-width) - 0.5rem);
+            background: var(--sidebar-bg-color);
+            border-left: 1px solid var(--sidebar-border-color);
+            box-shadow: var(--sidebar-shadow);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 1rem 0.75rem;
+              border-bottom: 1px solid var(--sidebar-border-color);
+            "
+          >
+            <div style="font-size: 0.875rem; font-weight: 600">Designs</div>
+            <div style="display: flex; align-items: center">
+              <div class="IconButton IconButton--ghost">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="width: 1rem; height: 1rem; flex-shrink: 0"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path
+                    d="M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5 -1.5l1.5 -4l4 -4"
+                  ></path>
+                  <path d="M9 15l-4.5 4.5"></path>
+                  <path d="M14.5 4l5.5 5.5"></path>
+                </svg>
+              </div>
+              <div class="IconButton IconButton--ghost">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="width: 1rem; height: 1rem; flex-shrink: 0"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M18 6l-12 12"></path>
+                  <path d="M6 6l12 12"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 0.75rem 0.75rem 0.5rem;
+              display: flex;
+              flex-direction: column;
+              gap: 0.75rem;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                height: 2.25rem;
+                padding: 0 0.625rem;
+                border: 1px solid var(--ExcTextField--border);
+                border-radius: 0.5rem;
+                background: var(--color-surface-low);
+                font-size: 0.875rem;
+                font-weight: 600;
+                box-sizing: border-box;
+              "
+            >
+              <span style="line-height: 1">🛒</span
+              ><span
+                style="
+                  flex-grow: 1;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+                >Checkout redesign</span
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1rem; height: 1rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M6 9l6 6l6 -6"></path>
+              </svg>
+            </div>
+            <div
+              class="ExcTextField ExcTextField--hasIcon ExcTextField--compact"
+              style="width: 100%"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1.25rem; height: 1.25rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                <path d="M21 21l-6 -6"></path>
+              </svg>
+              <div class="ExcTextField__input">
+                <span class="ExcTextField__input--placeholder"
+                  >Search designs</span
+                >
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 0.125rem;
+              padding: 0 0.5rem;
+              flex-grow: 1;
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.625rem;
+                padding: 0.375rem 0.5rem;
+                border-radius: var(--border-radius-md);
+                background: var(--color-primary-light);
+              "
+            >
+              <div
+                style="
+                  width: 3.5rem;
+                  height: 2.25rem;
+                  flex-shrink: 0;
+                  border: 1px solid var(--color-surface-high);
+                  border-radius: 0.25rem;
+                  background: var(--island-bg-color);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0.125rem;
+                  box-sizing: border-box;
+                "
+              >
+                <svg
+                  viewBox="0 0 220 106"
+                  preserveAspectRatio="xMidYMid meet"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    color: var(--color-on-surface);
+                    opacity: 0.85;
+                  "
+                >
+                  <rect x="14" y="30" width="56" height="34" rx="4"></rect>
+                  <path d="M24 40 h36 M24 48 h24"></path>
+                  <rect x="96" y="30" width="56" height="34" rx="4"></rect>
+                  <path d="M106 40 h36 M106 48 h30 M106 56 h18"></path>
+                  <rect x="178" y="30" width="34" height="34" rx="17"></rect>
+                  <path d="M188 47 l6 6 10 -12"></path>
+                  <path d="M70 47 H94"></path>
+                  <path d="M90 43 l4 4 -4 4"></path>
+                  <path d="M152 47 H176"></path>
+                  <path d="M172 43 l4 4 -4 4"></path>
+                </svg>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  min-width: 0;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                >
+                  v3 · side cart
+                </div>
+                <div class="muted" style="font-size: 0.6875rem">
+                  2 hours ago
+                </div>
+              </div>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  color: var(--color-primary);
+                  width: 1rem;
+                  height: 1rem;
+                  flex-shrink: 0;
+                "
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M5 12l5 5l10 -10"></path>
+              </svg>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.625rem;
+                padding: 0.375rem 0.5rem;
+                border-radius: var(--border-radius-md);
+              "
+            >
+              <div
+                style="
+                  width: 3.5rem;
+                  height: 2.25rem;
+                  flex-shrink: 0;
+                  border: 1px solid var(--color-surface-high);
+                  border-radius: 0.25rem;
+                  background: var(--island-bg-color);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0.125rem;
+                  box-sizing: border-box;
+                "
+              >
+                <svg
+                  viewBox="0 0 220 106"
+                  preserveAspectRatio="xMidYMid meet"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    color: var(--color-on-surface);
+                    opacity: 0.85;
+                  "
+                >
+                  <rect x="14" y="22" width="44" height="26" rx="3"></rect>
+                  <rect x="86" y="22" width="44" height="26" rx="3"></rect>
+                  <rect x="158" y="22" width="44" height="26" rx="3"></rect>
+                  <path d="M58 35 H84"></path>
+                  <path d="M80 31 l4 4 -4 4"></path>
+                  <path d="M130 35 H156"></path>
+                  <path d="M152 31 l4 4 -4 4"></path>
+                  <path d="M108 48 V78 H36 V50"></path>
+                  <path d="M32 54 l4 -4 4 4"></path>
+                </svg>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  min-width: 0;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                >
+                  v2 · single page
+                </div>
+                <div class="muted" style="font-size: 0.6875rem">yesterday</div>
+              </div>
+              <div style="color: var(--color-gray-40)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="width: 1rem; height: 1rem; flex-shrink: 0"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                </svg>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.625rem;
+                padding: 0.375rem 0.5rem;
+                border-radius: var(--border-radius-md);
+              "
+            >
+              <div
+                style="
+                  width: 3.5rem;
+                  height: 2.25rem;
+                  flex-shrink: 0;
+                  border: 1px solid var(--color-surface-high);
+                  border-radius: 0.25rem;
+                  background: var(--island-bg-color);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0.125rem;
+                  box-sizing: border-box;
+                "
+              >
+                <svg
+                  viewBox="0 0 220 106"
+                  preserveAspectRatio="xMidYMid meet"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    color: var(--color-on-surface);
+                    opacity: 0.85;
+                  "
+                >
+                  <rect x="16" y="14" width="190" height="82" rx="3"></rect>
+                  <path d="M16 30 H206"></path>
+                  <rect x="24" y="19" width="26" height="6" rx="2"></rect>
+                  <path d="M150 22 h12 M168 22 h12 M186 22 h12"></path>
+                  <rect x="24" y="40" width="80" height="44" rx="2"></rect>
+                  <path d="M116 44 h70 M116 54 h60 M116 64 h66"></path>
+                  <rect x="116" y="72" width="30" height="10" rx="3"></rect>
+                </svg>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  min-width: 0;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                >
+                  v1 · stepper
+                </div>
+                <div class="muted" style="font-size: 0.6875rem">3 days ago</div>
+              </div>
+              <div style="color: var(--color-gray-40)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="width: 1rem; height: 1rem; flex-shrink: 0"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                </svg>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.625rem;
+                padding: 0.375rem 0.5rem;
+                border-radius: var(--border-radius-md);
+              "
+            >
+              <div
+                style="
+                  width: 3.5rem;
+                  height: 2.25rem;
+                  flex-shrink: 0;
+                  border: 1px solid var(--color-surface-high);
+                  border-radius: 0.25rem;
+                  background: var(--island-bg-color);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0.125rem;
+                  box-sizing: border-box;
+                "
+              >
+                <svg
+                  viewBox="0 0 220 106"
+                  preserveAspectRatio="xMidYMid meet"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    color: var(--color-on-surface);
+                    opacity: 0.85;
+                  "
+                >
+                  <rect x="22" y="12" width="44" height="82" rx="6"></rect>
+                  <rect x="30" y="24" width="28" height="6" rx="2"></rect>
+                  <rect x="30" y="36" width="28" height="30" rx="2"></rect>
+                  <rect x="30" y="72" width="28" height="8" rx="3"></rect>
+                  <rect x="92" y="12" width="44" height="82" rx="6"></rect>
+                  <rect x="100" y="24" width="28" height="18"></rect>
+                  <path d="M100 50 h28 M100 58 h20 M100 66 h24"></path>
+                  <rect x="100" y="76" width="28" height="8" rx="3"></rect>
+                  <rect x="162" y="12" width="44" height="82" rx="6"></rect>
+                  <path d="M170 24 h28 M170 32 h18"></path>
+                  <circle cx="184" cy="56" r="12"></circle>
+                  <rect x="170" y="76" width="28" height="8" rx="3"></rect>
+                </svg>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  min-width: 0;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                >
+                  Mobile checkout
+                </div>
+                <div class="muted" style="font-size: 0.6875rem">4 days ago</div>
+              </div>
+              <div style="color: var(--color-gray-40)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="width: 1rem; height: 1rem; flex-shrink: 0"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                </svg>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.625rem;
+                padding: 0.375rem 0.5rem;
+                border-radius: var(--border-radius-md);
+              "
+            >
+              <div
+                style="
+                  width: 3.5rem;
+                  height: 2.25rem;
+                  flex-shrink: 0;
+                  border: 1px solid var(--color-surface-high);
+                  border-radius: 0.25rem;
+                  background: var(--island-bg-color);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0.125rem;
+                  box-sizing: border-box;
+                "
+              >
+                <svg
+                  viewBox="0 0 220 106"
+                  preserveAspectRatio="xMidYMid meet"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    color: var(--color-on-surface);
+                    opacity: 0.85;
+                  "
+                >
+                  <ellipse cx="110" cy="52" rx="26" ry="14"></ellipse>
+                  <ellipse cx="40" cy="24" rx="20" ry="10"></ellipse>
+                  <ellipse cx="40" cy="82" rx="20" ry="10"></ellipse>
+                  <ellipse cx="182" cy="24" rx="20" ry="10"></ellipse>
+                  <ellipse cx="182" cy="82" rx="20" ry="10"></ellipse>
+                  <path
+                    d="M86 46 Q70 40 60 28 M86 60 Q70 66 60 78 M134 46 Q150 40 162 28 M134 60 Q150 66 162 78"
+                  ></path>
+                </svg>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  min-width: 0;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                >
+                  Payment methods
+                </div>
+                <div class="muted" style="font-size: 0.6875rem">last week</div>
+              </div>
+              <div style="color: var(--color-gray-40)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="width: 1rem; height: 1rem; flex-shrink: 0"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                </svg>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.625rem;
+                padding: 0.375rem 0.5rem;
+                border-radius: var(--border-radius-md);
+              "
+            >
+              <div
+                style="
+                  width: 3.5rem;
+                  height: 2.25rem;
+                  flex-shrink: 0;
+                  border: 1px solid var(--color-surface-high);
+                  border-radius: 0.25rem;
+                  background: var(--island-bg-color);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0.125rem;
+                  box-sizing: border-box;
+                "
+              >
+                <svg
+                  viewBox="0 0 220 106"
+                  preserveAspectRatio="xMidYMid meet"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    color: var(--color-on-surface);
+                    opacity: 0.85;
+                  "
+                >
+                  <rect x="20" y="12" width="40" height="18" rx="3"></rect>
+                  <rect x="90" y="12" width="40" height="18" rx="3"></rect>
+                  <rect x="160" y="12" width="40" height="18" rx="3"></rect>
+                  <path
+                    d="M40 30 V94 M110 30 V94 M180 30 V94"
+                    stroke-dasharray="4 4"
+                  ></path>
+                  <path d="M40 46 H108"></path>
+                  <path d="M104 42 l4 4 -4 4"></path>
+                  <path d="M110 62 H178"></path>
+                  <path d="M174 58 l4 4 -4 4"></path>
+                  <path d="M180 80 H42"></path>
+                  <path d="M46 76 l-4 4 4 4"></path>
+                </svg>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  min-width: 0;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                >
+                  Error states
+                </div>
+                <div class="muted" style="font-size: 0.6875rem">last week</div>
+              </div>
+              <div style="color: var(--color-gray-40)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="width: 1rem; height: 1rem; flex-shrink: 0"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                </svg>
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.625rem;
+                padding: 0.375rem 0.5rem;
+                border-radius: var(--border-radius-md);
+              "
+            >
+              <div
+                style="
+                  width: 3.5rem;
+                  height: 2.25rem;
+                  flex-shrink: 0;
+                  border: 1px solid var(--color-surface-high);
+                  border-radius: 0.25rem;
+                  background: var(--island-bg-color);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  padding: 0.125rem;
+                  box-sizing: border-box;
+                "
+              >
+                <svg
+                  viewBox="0 0 220 106"
+                  preserveAspectRatio="xMidYMid meet"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    color: var(--color-on-surface);
+                    opacity: 0.85;
+                  "
+                >
+                  <ellipse cx="48" cy="34" rx="30" ry="14"></ellipse>
+                  <rect x="120" y="20" width="70" height="28" rx="3"></rect>
+                  <path d="M78 34 H118"></path>
+                  <path d="M114 30 l4 4 -4 4"></path>
+                  <rect x="38" y="70" width="60" height="24" rx="3"></rect>
+                  <rect x="132" y="70" width="60" height="24" rx="3"></rect>
+                  <path d="M155 48 V68"></path>
+                  <path d="M151 64 l4 4 4 -4"></path>
+                  <path d="M68 68 V48"></path>
+                  <path d="M64 52 l4 -4 4 4"></path>
+                </svg>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  min-width: 0;
+                  flex-grow: 1;
+                "
+              >
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                >
+                  Empty cart
+                </div>
+                <div class="muted" style="font-size: 0.6875rem">
+                  2 weeks ago
+                </div>
+              </div>
+              <div style="color: var(--color-gray-40)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="width: 1rem; height: 1rem; flex-shrink: 0"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                  <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 0.75rem;
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+              border-top: 1px solid var(--sidebar-border-color);
+            "
+          >
+            <div
+              style="width: 100%; box-sizing: border-box"
+              class="ExcButton ExcButton--filled"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1.25rem; height: 1.25rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M12 5l0 14"></path>
+                <path d="M5 12l14 0"></path></svg
+              ><span>New design</span>
+            </div>
+            <div
+              style="width: 100%; box-sizing: border-box"
+              class="ExcButton ExcButton--outlined"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="width: 1.25rem; height: 1.25rem; flex-shrink: 0"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path
+                  d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"
+                ></path>
+                <path
+                  d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"
+                ></path></svg
+              ><span>Duplicate current</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-dc>
+  </body>
+</html>

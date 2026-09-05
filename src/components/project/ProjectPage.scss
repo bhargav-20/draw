@@ -1,0 +1,22 @@
+.excalidraw.ProjectsApp {
+  // `AppShell className` lands on the root element itself
+  &.ProjectPage {
+    .Toolbar {
+      .SearchBox {
+        flex: 0 1 18rem;
+      }
+
+      @media (max-width: 720px) {
+        .SearchBox {
+          flex-basis: 100%;
+        }
+      }
+    }
+
+    // the empty state can host two actions side by side
+    .EmptyState__actions {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,109 @@
+/**
+ * App-level styles. Design tokens come from `@excalidraw/excalidraw/index.css`
+ * (the `.excalidraw` / `.excalidraw.theme--dark` blocks); we only add what
+ * Excalidraw has no token for and undo the editor-specific layout rules of
+ * the `.excalidraw` root class.
+ */
+
+.excalidraw.ProjectsApp {
+  // the editor root is `display:flex; overflow:hidden; user-select:none`
+  display: block;
+  position: relative;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  user-select: text;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background: var(--default-bg-color);
+  color: var(--text-primary-color);
+
+  button {
+    font-family: var(--ui-font);
+  }
+
+  input,
+  textarea {
+    font-family: var(--ui-font);
+  }
+
+  // ---- project accent colours (open-color 0 / 7, same source as upstream Card.tsx)
+  --pc-gray-bg: #f1f3f5;
+  --pc-gray: #868e96;
+  --pc-violet-bg: #f3f0ff;
+  --pc-violet: #7048e8;
+  --pc-blue-bg: #e7f5ff;
+  --pc-blue: #1c7ed6;
+  --pc-teal-bg: #e6fcf5;
+  --pc-teal: #0ca678;
+  --pc-green-bg: #ebfbee;
+  --pc-green: #37b24d;
+  --pc-yellow-bg: #fff9db;
+  --pc-yellow: #f59f00;
+  --pc-orange-bg: #fff4e6;
+  --pc-orange: #f76707;
+  --pc-red-bg: #fff5f5;
+  --pc-red: #e03131;
+  --pc-pink-bg: #fff0f6;
+  --pc-pink: #d6336c;
+
+  --card-thumbnail-height: 9.5rem;
+  --page-padding-x: 2rem;
+  --header-height: 4rem;
+
+  &.theme--dark {
+    --pc-gray-bg: #2b2d31;
+    --pc-violet-bg: #2f2a4a;
+    --pc-blue-bg: #1f2f43;
+    --pc-teal-bg: #163a30;
+    --pc-green-bg: #1d3a24;
+    --pc-yellow-bg: #3d3416;
+    --pc-orange-bg: #3f2a17;
+    --pc-red-bg: #40201f;
+    --pc-pink-bg: #3f1f2c;
+  }
+
+  @media (max-width: 720px) {
+    --page-padding-x: 1rem;
+  }
+}
+
+// portal root for dialogs / popovers rendered outside the page tree
+.excalidraw.ProjectsApp-portal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--zIndex-modal);
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+
+  &.ProjectsApp-portal--popover {
+    z-index: var(--zIndex-popup);
+  }
+}
+
+.ProjectsApp {
+  .muted {
+    color: var(--color-gray-60);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

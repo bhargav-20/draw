@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#6965db" />
+    <meta name="referrer" content="origin" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta
+      name="description"
+      content="Local-first project & design manager in front of the Excalidraw canvas."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>Excalidraw Projects</title>
+
+    <!-- minimise white flash on load when the user has dark mode enabled (same guard as excalidraw.com) -->
+    <script>
+      try {
+        var theme = window.localStorage.getItem("excalidraw-projects-theme");
+        if (!theme || theme === "system") {
+          theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {
+        console.error("Error setting dark mode", e);
+      }
+    </script>
+    <style>
+      html,
+      body,
+      #root {
+        height: 100%;
+        margin: 0;
+      }
+      html.dark {
+        background-color: #121212;
+        color: #fff;
+      }
+    </style>
+    <script>
+      // self-hosted excalidraw fonts (copied from the package into /public/fonts by `scripts/copy-fonts.mjs`)
+      window.EXCALIDRAW_ASSET_PATH = "%BASE_URL%";
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

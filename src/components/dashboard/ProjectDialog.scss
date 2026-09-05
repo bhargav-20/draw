@@ -1,0 +1,18 @@
+// rendered inside a dialog (portal) – scoped to `.excalidraw`, not `.ProjectsApp`
+.excalidraw {
+  .ProjectDialog__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .ProjectDialog__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+
+    .Dialog__field-label {
+      margin: 0;
+    }
+  }
+}
