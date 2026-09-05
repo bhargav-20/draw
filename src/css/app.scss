@@ -20,6 +20,12 @@
   --pc-red: #e03131;
   --pc-pink-bg: #fff0f6;
   --pc-pink: #d6336c;
+
+  // ---- the Excalidraw canvas, as a surface: dotted paper behind previews
+  --canvas-bg: #fdfdff;
+  --canvas-dot: rgba(27, 27, 31, 0.16);
+  // hand-drawn labels (empty states); declared in index.html, Latin only
+  --hand-font: "Excalifont", "Comic Sans MS", cursive;
 }
 
 @mixin app-tokens-dark {
@@ -32,6 +38,9 @@
   --pc-orange-bg: #3f2a17;
   --pc-red-bg: #40201f;
   --pc-pink-bg: #3f1f2c;
+
+  --canvas-bg: #1a1a1f;
+  --canvas-dot: rgba(227, 227, 232, 0.14);
 }
 
 /**
@@ -66,7 +75,7 @@
 
   @include app-tokens;
 
-  --card-thumbnail-height: 9.5rem;
+  --card-thumbnail-height: 10rem;
   --page-padding-x: 2rem;
   --header-height: 4rem;
 

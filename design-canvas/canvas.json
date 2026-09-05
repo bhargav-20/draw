@@ -1,20 +1,44 @@
 {
+  "pages": [
+    { "id": "page-1", "name": "Screens" },
+    { "id": "page-2", "name": "Card & modal directions" }
+  ],
   "artboards": [
-    { "file": "Main.dc.html", "title": "Dashboard", "x": 0, "y": 0, "w": 1440, "h": 900 },
-    { "file": "ProjectPage.dc.html", "title": "Project page", "x": 1540, "y": 0, "w": 1440, "h": 900 },
-    { "file": "Editor.dc.html", "title": "Editor + Designs sidebar", "x": 3080, "y": 0, "w": 1440, "h": 900 },
-    { "file": "DashboardDark.dc.html", "title": "Dashboard (dark)", "x": 0, "y": 1040, "w": 1440, "h": 900 },
-    { "file": "Dialogs.dc.html", "title": "Dialogs & menus", "x": 1540, "y": 1040, "w": 1440, "h": 900 }
+    { "file": "Main.dc.html", "title": "Dashboard", "page": "page-1", "x": 0, "y": 0, "w": 1440, "h": 900 },
+    { "file": "ProjectPage.dc.html", "title": "Project page", "page": "page-1", "x": 1540, "y": 0, "w": 1440, "h": 900 },
+    { "file": "Editor.dc.html", "title": "Editor + Designs sidebar", "page": "page-1", "x": 3080, "y": 0, "w": 1440, "h": 900 },
+    { "file": "DashboardDark.dc.html", "title": "Dashboard (dark)", "page": "page-1", "x": 0, "y": 1040, "w": 1440, "h": 900 },
+    { "file": "Dialogs.dc.html", "title": "Dialogs & menus", "page": "page-1", "x": 1540, "y": 1040, "w": 1440, "h": 900 },
+    { "file": "DirCurrent.dc.html", "title": "Current (baseline)", "page": "page-2", "x": 0, "y": 0, "w": 1440, "h": 960 },
+    { "file": "DirSketchbook.dc.html", "title": "A · Sketchbook", "page": "page-2", "x": 1540, "y": 0, "w": 1440, "h": 1120 },
+    { "file": "DirWorkbench.dc.html", "title": "B · Workbench", "page": "page-2", "x": 0, "y": 1260, "w": 1440, "h": 920 },
+    { "file": "DirGallery.dc.html", "title": "C · Gallery", "page": "page-2", "x": 1540, "y": 1260, "w": 1440, "h": 1010 }
   ],
   "annotations": [
     {
       "id": "brief",
+      "page": "page-1",
       "x": 0,
       "y": -220,
       "w": 520,
       "text": "Excalidraw Projects — UI design\n\nFlow: Dashboard (projects) → Project page (designs) → Editor (stock Excalidraw + our breadcrumb + 'Designs' sidebar).\n\nEvery token, radius, shadow and control size is lifted from Excalidraw's own theme.scss / component styles, so the dashboard reads as part of the editor. Dark mode is the same markup with Excalidraw's dark tokens."
     },
-    { "id": "editor-note", "x": 3080, "y": -140, "w": 420, "text": "Editor: Excalidraw's own UI is untouched. We only add the top-right breadcrumb island + 'Designs' trigger (renderTopRightUI) and a custom <Sidebar> listing the project's designs." }
+    {
+      "id": "editor-note",
+      "page": "page-1",
+      "x": 3080,
+      "y": -140,
+      "w": 420,
+      "text": "Editor: Excalidraw's own UI is untouched. We only add the top-right breadcrumb island + 'Designs' trigger (renderTopRightUI) and a custom <Sidebar> listing the project's designs."
+    },
+    {
+      "id": "directions-brief",
+      "page": "page-2",
+      "x": 0,
+      "y": -260,
+      "w": 600,
+      "text": "Three answers to \"the cards and the New-project modal feel generic\".\n\nEach board is one coherent system — the modal, the project card and the design card share a language, so they are meant to be picked whole rather than mixed. Top-left is what ships today, for comparison.\n\nA · Sketchbook — lean into Excalidraw's own identity.\nB · Workbench — density and rhythm, more on screen.\nC · Gallery — let the designs themselves carry the page.\n\nPick one (or say which parts of which) and I'll build it."
+    }
   ],
-  "launch": { "view": "canvas" }
+  "launch": { "view": "canvas", "page": "page-2" }
 }

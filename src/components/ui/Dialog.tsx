@@ -45,6 +45,8 @@ export type DialogProps = {
   /** don't close on backdrop click / Escape (e.g. while an import is running) */
   locked?: boolean;
   closeOnClickOutside?: boolean;
+  /** names the dialog when `title` is `false` and the heading is in `children` */
+  "aria-label"?: string;
 };
 
 export const Dialog = ({
@@ -56,6 +58,7 @@ export const Dialog = ({
   className,
   locked,
   closeOnClickOutside = true,
+  ...rest
 }: DialogProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<Element | null>(null);
@@ -126,6 +129,7 @@ export const Dialog = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
+        aria-label={title ? undefined : rest["aria-label"]}
         style={
           { "--max-width": `${getDialogSize(size)}px` } as React.CSSProperties
         }

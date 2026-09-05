@@ -3,7 +3,7 @@
  * they are served from our own origin (required for offline / PWA use).
  * The package resolves them at runtime relative to `window.EXCALIDRAW_ASSET_PATH`.
  */
-import { cpSync, existsSync, mkdirSync, rmSync } from "node:fs";
+import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -19,3 +19,24 @@ rmSync(target, { recursive: true, force: true });
 mkdirSync(target, { recursive: true });
 cpSync(source, target, { recursive: true });
 console.log(`[copy-fonts] copied fonts → ${target}`);
+
+// Excalifont ships as content-hashed unicode subsets, so the app's own
+// `@font-face` (index.html, used for the hand-drawn empty states) has no stable
+// name to point at. Alias the Latin subset — reliably the largest of them,
+// since the others cover small symbol ranges — under a fixed filename.
+// A wrong pick or a missing file only costs the hand-drawn look: the CSS
+// fallback stack still renders the text.
+const excalifont = resolve(target, "Excalifont");
+const latin = readdirSync(excalifont)
+  .filter((name) => name.endsWith(".woff2"))
+  .map((name) => ({ name, size: statSync(resolve(excalifont, name)).size }))
+  .sort((a, b) => b.size - a.size)[0];
+if (latin) {
+  copyFileSync(
+    resolve(excalifont, latin.name),
+    resolve(excalifont, "Excalifont-Regular-latin.woff2"),
+  );
+  console.log(`[copy-fonts] aliased ${latin.name} → Excalifont-Regular-latin.woff2`);
+} else {
+  console.warn("[copy-fonts] no Excalifont subset found – hand-drawn text will fall back");
+}

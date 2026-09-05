@@ -5,11 +5,13 @@ import { ProjectCard } from "./ProjectCard";
 import type { SortableMove } from "../layout/SortableGrid";
 import type { ProjectCardProps } from "./ProjectCard";
 
-import type { Project } from "../../types";
+import type { Design, Project } from "../../types";
 
 type ProjectGridProps = {
   projects: Project[];
   designCounts: ReadonlyMap<string, number>;
+  /** per project, the designs whose thumbnails make up the card's fan */
+  previews: ReadonlyMap<string, Design[]>;
   onReorder: (move: SortableMove) => void;
   onTagClick?: (tag: string) => void;
   /** per-card action callbacks */
@@ -17,7 +19,7 @@ type ProjectGridProps = {
     project: Project,
   ) => Omit<
     ProjectCardProps,
-    "project" | "designCount" | "sortable" | "onTagClick"
+    "project" | "designCount" | "previews" | "sortable" | "onTagClick"
   >;
 };
 
@@ -25,6 +27,7 @@ type ProjectGridProps = {
 export const ProjectGrid = ({
   projects,
   designCounts,
+  previews,
   onReorder,
   onTagClick,
   actions,
@@ -36,6 +39,7 @@ export const ProjectGrid = ({
       <ProjectCard
         project={project}
         designCount={designCounts.get(project.id) ?? 0}
+        previews={previews.get(project.id)}
         sortable={sortable}
         onTagClick={onTagClick}
         {...actions(project)}

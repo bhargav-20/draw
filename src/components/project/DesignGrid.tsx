@@ -5,7 +5,7 @@ import { SortableGrid } from "../layout/SortableGrid";
 import { DesignCard } from "./DesignCard";
 
 import type { SortableMove } from "../layout/SortableGrid";
-import type { DesignMenuActions } from "./DesignMenu";
+import type { DesignCardActions } from "./DesignCard";
 
 import type { Design } from "../../types";
 
@@ -14,7 +14,7 @@ type DesignGridProps = {
   onReorder: (move: SortableMove) => void;
   onTagClick?: (tag: string) => void;
   /** per-card action callbacks */
-  actions: (design: Design) => DesignMenuActions;
+  actions: (design: Design) => DesignCardActions;
   /** rendered first (the "new design" card) */
   leading?: React.ReactNode;
 };

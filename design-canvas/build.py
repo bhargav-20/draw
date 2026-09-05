@@ -650,6 +650,396 @@ FILES = {
     "Dialogs.dc.html": dialogs_page(),
 }
 
+
+
+# =============================================================================================
+# 5. Card & modal directions  (three systems for the New-project modal + the two card types)
+# =============================================================================================
+def dots(step=12, colour="rgba(0,0,0,.07)"):
+    """Excalidraw's canvas dot grid, as a background shorthand."""
+    return (f"background-image: radial-gradient(circle at 1px 1px, {colour} 1px, transparent 0); "
+            f"background-size: {step}px {step}px;")
+
+def stage(label, inner, pad="1.75rem", bg="var(--default-bg-color)"):
+    return (
+        '<div style="display: flex; flex-direction: column; gap: 0.625rem;">'
+        f'<div style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-gray-50);">{label}</div>'
+        f'<div style="background: {bg}; border: 1px solid var(--color-gray-20); border-radius: 0.75rem; padding: {pad}; box-sizing: border-box;">{inner}</div>'
+        '</div>'
+    )
+
+def board_head(eyebrow, name, why, cost):
+    return (
+        '<div style="display: flex; flex-direction: column; gap: 0.375rem; max-width: 46rem;">'
+        f'<div style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-primary);">{eyebrow}</div>'
+        f'<div style="font-size: 1.75rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em;">{name}</div>'
+        f'<div style="font-size: 0.875rem; line-height: 1.5; color: var(--color-gray-70);">{why}</div>'
+        '<div style="display: flex; gap: 0.5rem; align-items: baseline; margin-top: 0.125rem;">'
+        '<span style="font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-gray-50); flex-shrink: 0;">Trade-off</span>'
+        f'<span style="font-size: 0.8125rem; line-height: 1.5; color: var(--color-gray-60);">{cost}</span>'
+        '</div>'
+        '</div>'
+    )
+
+def dir_board(eyebrow, name, why, cost, modal, project_cards, design_cards, height):
+    body = (
+        '<div style="display: flex; flex-direction: column; gap: 1.75rem; padding: 2.25rem 2.5rem;">'
+        + board_head(eyebrow, name, why, cost) +
+        '<div style="display: flex; gap: 2.5rem; align-items: flex-start;">'
+        f'<div style="width: 37.5rem; flex-shrink: 0;">{stage("New project modal", modal, bg="var(--color-surface-mid)")}</div>'
+        '<div style="display: flex; flex-direction: column; gap: 1.75rem; flex-grow: 1; min-width: 0;">'
+        + stage("Project card — dashboard", project_cards)
+        + stage("Design card — project page", design_cards) +
+        '</div></div></div>'
+    )
+    return page(name, body, bg="#fbfbfd", w=1440, h=height)
+
+# ---- the three surfaces, per direction -------------------------------------------------------
+EMOJI_ROW = ["🛒", "📱", "🏗️", "🧭", "📊", "🔐", "🗺️", "🧪", "💡", "🎯"]
+COLOUR_ROW = ["gray", "violet", "blue", "teal", "green", "yellow", "orange", "red", "pink"]
+
+def swatches(selected="violet", size="1.5rem", gap="0.625rem"):
+    return f'<div style="display: flex; gap: {gap};">' + "".join(
+        f'<div style="width: {size}; height: {size}; border-radius: 100%; background: var(--pc-{c}); box-sizing: border-box;'
+        + (f' box-shadow: 0 0 0 2px var(--island-bg-color), 0 0 0 4px var(--pc-{c});' if c == selected else '')
+        + '"></div>' for c in COLOUR_ROW) + '</div>'
+
+def emoji_tiles(selected=0, accent="violet", tile="2.375rem", cols=10, font="1.25rem"):
+    return (f'<div style="display: grid; grid-template-columns: repeat({cols}, minmax(0, 1fr)); gap: 0.375rem;">' + "".join(
+        f'<div style="height: {tile}; border-radius: var(--border-radius-lg); background: var(--color-surface-low); display: flex; align-items: center; justify-content: center; font-size: {font}; line-height: 1; box-sizing: border-box;'
+        + (f' background: var(--pc-{accent}-bg); box-shadow: 0 0 0 2px var(--pc-{accent});' if i == selected else '')
+        + f'">{e}</div>' for i, e in enumerate(EMOJI_ROW)) + '</div>')
+
+def dialog_actions():
+    return ('<div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 0.25rem;">'
+            '<div class="Dialog__action-button">Cancel</div>'
+            '<div class="Dialog__action-button Dialog__action-button--primary">' + icon(I["plus"]) + 'Create project</div>'
+            '</div>')
+
+def tag_field():
+    return field("Tags", '<span class="Tag">web</span><span class="Tag">payments</span><span class="ExcTextField__input--placeholder">Add tag…</span>')
+
+def name_field(value="Checkout redesign", compact=False):
+    caret = '<span style="width: 1px; height: 1.25rem; background: var(--color-on-surface);"></span>'
+    cls = "ExcTextField ExcTextField--compact" if compact else "ExcTextField"
+    return (f'<div class="{cls}" style="width: 100%;">'
+            '<div class="ExcTextField__label">Name</div>'
+            f'<div class="ExcTextField__input ExcTextField__input--active"><span>{value}</span>{caret}</div>'
+            '</div>')
+
+# ---------- Current -------------------------------------------------------------------------
+def cur_project_card(emoji, colour, name, count, when, tag_names):
+    return (
+        '<div class="Island" style="width: 20rem; display: flex; flex-direction: column; gap: 0.875rem; padding: 1.25rem; box-sizing: border-box; min-height: 11.5rem; overflow: hidden;">'
+        f'<div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--pc-{colour}); opacity: 0.85;"></div>'
+        '<div style="display: flex; align-items: flex-start; justify-content: space-between;">'
+        f'<div style="width: 2.75rem; height: 2.75rem; border-radius: 0.75rem; background: var(--pc-{colour}-bg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; line-height: 1;">{emoji}</div>'
+        f'<div class="IconButton IconButton--ghost" style="color: var(--color-gray-50);">{icon(I["dots"])}</div>'
+        '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.25rem; flex-grow: 1;">'
+        f'<div style="font-size: 1rem; font-weight: 600; line-height: 1.3;">{name}</div>'
+        '<div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem;">'
+        f'<span style="font-weight: 600; color: var(--pc-{colour});">{count} designs</span>'
+        f'<span class="muted">·</span><span class="muted">{when}</span></div>'
+        '</div>' + tags(tag_names) + '</div>'
+    )
+
+def cur_design_card(name, when, sk, tag_names):
+    return (
+        '<div class="Island" style="width: 20rem; display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box;">'
+        '<div style="height: 9.5rem; display: flex; align-items: center; justify-content: center; padding: 0.75rem; background: var(--island-bg-color); border-bottom: 1px solid var(--color-surface-high); box-sizing: border-box;">'
+        + sketch(sk) + '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.5rem; padding: 0.75rem 0.875rem 0.875rem;">'
+        '<div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-height: 2rem;">'
+        '<div style="display: flex; flex-direction: column; gap: 0.125rem; min-width: 0;">'
+        f'<div style="font-size: 0.875rem; font-weight: 600;">{name}</div>'
+        f'<div class="muted" style="font-size: 0.75rem;">{when}</div></div>'
+        f'<div class="IconButton IconButton--ghost" style="color: var(--color-gray-50);">{icon(I["dots"])}</div>'
+        '</div>' + (tags(tag_names) if tag_names else '') + '</div></div>'
+    )
+
+def cur_modal():
+    return (
+        '<div class="Modal__content" style="width: 100%; display: flex; flex-direction: column; gap: 1.25rem;">'
+        '<div class="Dialog__close">' + icon(I["x"], "1.5rem") + '</div>'
+        '<div class="Dialog__title" style="margin-bottom: 0;">New project</div>'
+        '<div style="display: flex; align-items: flex-end; gap: 0.875rem;">'
+        '<div style="width: 3rem; height: 3rem; border-radius: 0.75rem; background: var(--pc-violet-bg); box-shadow: inset 0 0 0 1px var(--pc-violet); display: flex; align-items: center; justify-content: center; font-size: 1.625rem; line-height: 1; flex-shrink: 0;">🛒</div>'
+        + name_field() + '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.375rem;"><div class="ExcTextField__label" style="margin: 0;">Colour</div>' + swatches() + '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.375rem;"><div class="ExcTextField__label" style="margin: 0;">Icon</div>' + emoji_tiles() + '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.375rem;">' + tag_field()
+        + '<div class="muted" style="font-size: 0.75rem;">Tags are shared with designs and searchable with #tag.</div></div>'
+        + dialog_actions() + '</div>'
+    )
+
+# ---------- A · Sketchbook -------------------------------------------------------------------
+def sticker(emoji, colour, size="3.25rem", font="1.625rem", tilt="-3deg"):
+    return (f'<div style="width: {size}; height: {size}; border-radius: 0.875rem; background: var(--island-bg-color); '
+            f'box-shadow: 0 0 0 1.5px var(--pc-{colour}), 0 4px 10px rgba(0,0,0,.10); transform: rotate({tilt}); '
+            f'display: flex; align-items: center; justify-content: center; font-size: {font}; line-height: 1; box-sizing: border-box;">{emoji}</div>')
+
+def a_project_card(emoji, colour, name, count, when, tag_names):
+    return (
+        '<div class="Island" style="width: 20rem; border-radius: 0.75rem; overflow: hidden; box-sizing: border-box; position: relative;">'
+        f'<div style="height: 4.75rem; background-color: var(--pc-{colour}-bg); {dots(12)} position: relative;">'
+        f'<div style="position: absolute; top: 0.375rem; right: 0.5rem; color: var(--color-gray-60);"><div class="IconButton IconButton--ghost">{icon(I["dots"])}</div></div>'
+        '</div>'
+        '<div style="position: absolute; top: 3.125rem; left: 1.25rem;">' + sticker(emoji, colour) + '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.625rem; padding: 2.125rem 1.25rem 1.125rem;">'
+        '<div style="display: flex; flex-direction: column; gap: 0.375rem;">'
+        f'<div style="font-size: 1.0625rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em;">{name}</div>'
+        '<div style="display: flex; align-items: center; gap: 0.5rem;">'
+        f'<span style="display: inline-flex; align-items: center; height: 1.125rem; padding: 0 0.4375rem; border-radius: 999px; background: var(--pc-{colour}); color: #fff; font-size: 0.6875rem; font-weight: 700; line-height: 1;">{count} designs</span>'
+        f'<span class="muted" style="font-size: 0.75rem;">{when}</span></div></div>'
+        + tags(tag_names) + '</div></div>'
+    )
+
+def a_design_card(name, when, sk, tag_names, editing=False, empty=False):
+    if empty:
+        thumb = ('<div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem; color: var(--color-gray-40);">'
+                 + icon(I["rect"], "1.5rem", "1.25") +
+                 '<span class="sketch" style="font-size: 1.0625rem; color: var(--color-gray-50);">Empty canvas</span></div>')
+    else:
+        thumb = sketch(sk)
+    if editing:
+        title = ('<div class="ExcTextField" style="width: 100%;"><div class="ExcTextField__input ExcTextField__input--active" '
+                 'style="height: 1.875rem; padding: 0 0.5rem; font-size: 0.875rem; font-weight: 700; background: var(--island-bg-color);">'
+                 f'<span>{name}</span><span style="width: 1px; height: 1rem; background: var(--color-on-surface);"></span></div></div>')
+        actions = ''
+        ring = ' box-shadow: var(--shadow-island), 0 0 0 2px var(--color-brand-active);'
+    else:
+        title = f'<div style="font-size: 0.90625rem; font-weight: 700; letter-spacing: -0.005em;">{name}</div>'
+        actions = ('<div style="display: flex; align-items: center; gap: 0.125rem; color: var(--color-gray-50); flex-shrink: 0;">'
+                   f'<div class="IconButton IconButton--ghost">{icon(I["pencil"])}</div>'
+                   f'<div class="IconButton IconButton--ghost">{icon(I["dots"])}</div></div>')
+        ring = ''
+    return (
+        f'<div class="Island" style="width: 20rem; border-radius: 0.75rem; display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box;{ring}">'
+        f'<div style="height: 10rem; display: flex; align-items: center; justify-content: center; padding: 1rem; background-color: #fdfdff; {dots(22, "rgba(27,27,31,.16)")} border-bottom: 1px solid var(--color-surface-high); box-sizing: border-box;">'
+        + thumb + '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.5rem; padding: 0.75rem 0.875rem 0.875rem;">'
+        '<div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-height: 2rem;">'
+        '<div style="display: flex; flex-direction: column; gap: 0.0625rem; min-width: 0; flex-grow: 1;">'
+        + title + f'<div class="muted" style="font-size: 0.75rem;">{when}</div></div>'
+        + actions + '</div>'
+        + (tags(tag_names) if tag_names else '') + '</div></div>'
+    )
+
+def a_modal():
+    mini = (
+        '<div class="Island" style="width: 15rem; border-radius: 0.625rem; overflow: hidden; position: relative; box-sizing: border-box;">'
+        f'<div style="height: 2.75rem; background-color: var(--pc-violet-bg); {dots(10)}"></div>'
+        '<div style="position: absolute; top: 1.625rem; left: 0.875rem;">' + sticker("🛒", "violet", "2.375rem", "1.1875rem") + '</div>'
+        '<div style="padding: 1.375rem 0.875rem 0.875rem; display: flex; flex-direction: column; gap: 0.25rem;">'
+        '<div style="font-size: 0.875rem; font-weight: 700; letter-spacing: -0.01em;">Checkout redesign</div>'
+        '<div style="display: flex; align-items: center; gap: 0.375rem;">'
+        '<span style="display: inline-flex; align-items: center; height: 1rem; padding: 0 0.375rem; border-radius: 999px; background: var(--pc-violet); color: #fff; font-size: 0.625rem; font-weight: 700; line-height: 1;">0 designs</span>'
+        '<span class="muted" style="font-size: 0.6875rem;">new</span></div></div></div>'
+    )
+    return (
+        '<div class="Modal__content" style="width: 100%; display: flex; flex-direction: column; gap: 1.25rem;">'
+        '<div class="Dialog__close">' + icon(I["x"], "1.5rem") + '</div>'
+        '<div class="Dialog__title" style="margin-bottom: 0;">New project</div>'
+        f'<div style="display: flex; align-items: center; justify-content: center; height: 8.5rem; border-radius: 0.75rem; background-color: var(--color-surface-mid); {dots(16, "rgba(27,27,31,.09)")} border: 1px solid var(--color-surface-high); box-sizing: border-box;">'
+        + mini + '</div>'
+        + name_field() +
+        '<div style="display: flex; flex-direction: column; gap: 0.375rem;"><div class="ExcTextField__label" style="margin: 0;">Colour</div>' + swatches() + '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.375rem;"><div class="ExcTextField__label" style="margin: 0;">Icon</div>' + emoji_tiles() + '</div>'
+        + tag_field() + dialog_actions() + '</div>'
+    )
+
+# ---------- B · Workbench ---------------------------------------------------------------------
+def b_project_row(emoji, colour, name, count, when, tag_names, last=False):
+    border = '' if last else ' border-bottom: 1px solid var(--color-surface-high);'
+    return (
+        f'<div style="display: flex; align-items: center; gap: 0.875rem; height: 4.25rem; padding: 0 0.875rem 0 0; position: relative; box-sizing: border-box;{border}">'
+        f'<div style="width: 3px; align-self: stretch; background: var(--pc-{colour}); flex-shrink: 0;"></div>'
+        f'<div style="width: 2.5rem; height: 2.5rem; border-radius: var(--border-radius-lg); background: var(--pc-{colour}-bg); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; line-height: 1; flex-shrink: 0; margin-left: 0.75rem;">{emoji}</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.125rem; min-width: 0; flex-grow: 1;">'
+        '<div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">'
+        f'<span style="font-size: 0.90625rem; font-weight: 600; white-space: nowrap;">{name}</span>'
+        + tags(tag_names) + '</div>'
+        f'<div class="muted" style="font-size: 0.75rem;">{when}</div></div>'
+        '<div style="display: flex; flex-direction: column; align-items: flex-end; line-height: 1; flex-shrink: 0;">'
+        f'<span style="font-size: 1.125rem; font-weight: 700; color: var(--pc-{colour});">{count}</span>'
+        '<span style="font-size: 0.625rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-gray-50); margin-top: 2px;">designs</span></div>'
+        f'<div class="IconButton IconButton--ghost" style="color: var(--color-gray-50); margin-left: 0.25rem;">{icon(I["dots"])}</div>'
+        '</div>'
+    )
+
+def b_design_tile(name, when, sk, dot_colours, hovered=False):
+    overlay = ''
+    if hovered:
+        overlay = (
+            '<div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,18,18,.34), rgba(18,18,18,0) 58%);"></div>'
+            '<div style="position: absolute; left: 50%; bottom: 0.5rem; transform: translateX(-50%); display: flex; gap: 0.25rem; padding: 0.1875rem; border-radius: 999px; background: var(--island-bg-color); box-shadow: var(--shadow-island-stronger);">'
+            + "".join(f'<div style="width: 1.75rem; height: 1.75rem; border-radius: 999px; display: flex; align-items: center; justify-content: center; color: var(--color-gray-70);">{icon(I[k], "0.9375rem")}</div>' for k in ("arrow", "pencil", "dots"))
+            + '</div>')
+    dotrow = "".join(f'<span style="width: 0.375rem; height: 0.375rem; border-radius: 999px; background: var(--pc-{c}); flex-shrink: 0;"></span>' for c in dot_colours)
+    return (
+        '<div class="Island" style="width: 13rem; display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box;">'
+        '<div style="height: 8.125rem; display: flex; align-items: center; justify-content: center; padding: 0.625rem; background: var(--color-surface-mid); border-bottom: 1px solid var(--color-surface-high); box-sizing: border-box; position: relative;">'
+        + sketch(sk) + overlay + '</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.125rem; padding: 0.5rem 0.625rem 0.625rem;">'
+        '<div style="display: flex; align-items: center; gap: 0.375rem; min-width: 0;">'
+        f'<span style="font-size: 0.8125rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{name}</span>{dotrow}</div>'
+        f'<div class="muted" style="font-size: 0.6875rem;">{when}</div></div></div>'
+    )
+
+def b_modal():
+    rail = (
+        '<div style="width: 11rem; flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem;">'
+        '<div style="height: 6.5rem; border-radius: 0.75rem; background: var(--pc-violet-bg); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; line-height: 1; box-shadow: inset 0 0 0 1px var(--pc-violet);">🛒</div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.5rem;">'
+        '<div class="ExcTextField__label" style="margin: 0; font-size: 0.75rem;">Colour</div>'
+        '<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.5rem;">' + "".join(
+            f'<div style="width: 1.375rem; height: 1.375rem; border-radius: 100%; background: var(--pc-{c}); box-sizing: border-box;'
+            + (f' box-shadow: 0 0 0 2px var(--island-bg-color), 0 0 0 4px var(--pc-{c});' if c == "violet" else '')
+            + '"></div>' for c in COLOUR_ROW) + '</div></div></div>'
+    )
+    right = (
+        '<div style="display: flex; flex-direction: column; gap: 1rem; flex-grow: 1; min-width: 0;">'
+        + name_field(compact=True) +
+        '<div style="display: flex; flex-direction: column; gap: 0.375rem;">'
+        '<div class="ExcTextField__label" style="margin: 0; font-size: 0.75rem;">Icon</div>' + emoji_tiles(tile="2rem", cols=5, font="1.0625rem") + '</div>'
+        '<div class="ExcTextField" style="width: 100%;"><div class="ExcTextField__label" style="font-size: 0.75rem;">Tags</div>'
+        '<div class="ExcTextField__input" style="height: 2.25rem; font-size: 0.875rem;"><span class="Tag">web</span><span class="Tag">payments</span>'
+        '<span class="ExcTextField__input--placeholder">Add tag…</span></div></div></div>'
+    )
+    return (
+        '<div class="Modal__content" style="width: 100%; padding: 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;">'
+        '<div class="Dialog__close">' + icon(I["x"], "1.5rem") + '</div>'
+        '<div style="font-size: 1.0625rem; font-weight: 700;">New project</div>'
+        f'<div style="display: flex; gap: 1.25rem; align-items: flex-start;">{rail}{right}</div>'
+        '<div style="height: 1px; background: var(--color-surface-high);"></div>'
+        '<div style="display: flex; justify-content: flex-end; gap: 0.5rem;">'
+        '<div class="Dialog__action-button" style="height: 2.25rem; padding: 0 1rem; font-size: 0.8125rem;">Cancel</div>'
+        '<div class="Dialog__action-button Dialog__action-button--primary" style="height: 2.25rem; padding: 0 1rem; font-size: 0.8125rem;">' + icon(I["plus"], "1rem") + 'Create project</div>'
+        '</div></div>'
+    )
+
+# ---------- C · Gallery -----------------------------------------------------------------------
+def c_project_card(emoji, colour, name, count, when, tag_names, sks):
+    fan = "".join(
+        '<div class="Island" style="width: 5.5rem; height: 3.75rem; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; padding: 0.375rem; '
+        f'box-sizing: border-box; transform: rotate({t}deg) translateY({y}px); margin: 0 -0.625rem; box-shadow: 0 2px 8px rgba(0,0,0,.10);">'
+        + sketch(s) + '</div>' for s, t, y in zip(sks, (-7, 0, 7), (4, -4, 4)))
+    return (
+        '<div class="Island" style="width: 20rem; border-radius: 0.75rem; overflow: hidden; box-sizing: border-box; position: relative;">'
+        f'<div style="height: 7rem; background: var(--pc-{colour}-bg); display: flex; align-items: center; justify-content: center;">{fan}</div>'
+        f'<div style="position: absolute; top: 0.375rem; right: 0.5rem; color: var(--color-gray-60);"><div class="IconButton IconButton--ghost">{icon(I["dots"])}</div></div>'
+        '<div style="display: flex; flex-direction: column; gap: 0.5rem; padding: 0.9375rem 1.125rem 1.125rem;">'
+        '<div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">'
+        f'<span style="font-size: 1.125rem; line-height: 1;">{emoji}</span>'
+        f'<span style="font-size: 1.125rem; font-weight: 700; letter-spacing: -0.015em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{name}</span></div>'
+        '<div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">'
+        f'<span class="muted" style="font-size: 0.75rem;">{count} designs · {when}</span>{tags(tag_names)}</div>'
+        '</div></div>'
+    )
+
+def c_design_card(name, when, sk, empty=False, hovered=False):
+    if empty:
+        thumb = ('<div style="position: absolute; inset: 0; background: var(--color-surface-high); display: flex; align-items: center; justify-content: center;">'
+                 '<span class="sketch" style="font-size: 1.25rem; color: var(--color-primary); opacity: 0.55;">Empty canvas</span></div>')
+    else:
+        thumb = f'<div style="position: absolute; inset: 1rem;">{sketch(sk)}</div>'
+    over = ''
+    if hovered:
+        over = ('<div style="position: absolute; top: 0.5rem; right: 0.5rem; display: flex; gap: 0.25rem;">'
+                + "".join('<div style="width: 1.875rem; height: 1.875rem; border-radius: var(--border-radius-lg); background: var(--island-bg-color); box-shadow: var(--shadow-island-stronger); '
+                          f'display: flex; align-items: center; justify-content: center; color: var(--color-gray-70);">{icon(I[k], "1rem")}</div>' for k in ("pencil", "dots"))
+                + '</div>')
+    return (
+        '<div class="Island" style="width: 21.25rem; border-radius: 0.75rem; display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box;">'
+        '<div style="height: 11.25rem; position: relative; background: var(--island-bg-color);">' + thumb + over + '</div>'
+        '<div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.875rem 1.125rem 1rem; border-top: 1px solid var(--color-surface-high);">'
+        '<div style="display: flex; flex-direction: column; gap: 0.125rem; min-width: 0;">'
+        f'<div style="font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.005em;">{name}</div>'
+        f'<div class="muted" style="font-size: 0.75rem;">{when}</div></div></div></div>'
+    )
+
+def c_modal():
+    return (
+        '<div class="Modal__content" style="width: 100%; padding: 0; display: flex; flex-direction: column; overflow: hidden;">'
+        '<div class="Dialog__close" style="top: 1rem; right: 1rem; color: var(--color-gray-60);">' + icon(I["x"], "1.5rem") + '</div>'
+        f'<div style="height: 10rem; background-color: var(--pc-violet-bg); {dots(16, "rgba(27,27,31,.07)")} display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; border-bottom: 1px solid var(--color-surface-high);">'
+        '<div style="width: 3.75rem; height: 3.75rem; border-radius: 1rem; background: var(--island-bg-color); box-shadow: 0 4px 12px rgba(0,0,0,.10); display: flex; align-items: center; justify-content: center; font-size: 2rem; line-height: 1;">🛒</div>'
+        '<div style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.015em;">New project</div></div>'
+        '<div style="display: flex; flex-direction: column; gap: 1.25rem; padding: 1.75rem 2.5rem 2.5rem;">'
+        + name_field() +
+        '<div style="display: flex; flex-direction: column; gap: 0.625rem;">'
+        '<div class="ExcTextField__label" style="margin: 0;">Appearance</div>'
+        + swatches() + emoji_tiles() + '</div>'
+        + tag_field() + dialog_actions() + '</div></div>'
+    )
+
+# ---- board assembly --------------------------------------------------------------------------
+def row(items, gap="1.5rem"):
+    return f'<div style="display: flex; gap: {gap}; align-items: flex-start;">' + "".join(items) + '</div>'
+
+def board_current():
+    return dir_board(
+        "Today", "Current",
+        "What ships right now: a colour hairline, an emoji tile, a title and a meta line, stacked. Everything is the same weight, so nothing leads — this is the baseline the three directions are answering.",
+        "Reads like any dashboard tile. The project colour is decoration rather than structure, and the design thumbnail floats in a pale box that looks empty even when it isn't.",
+        cur_modal(),
+        row([cur_project_card("🛒", "violet", "Checkout redesign", 7, "edited 2 hours ago", ["web", "payments"]),
+             cur_project_card("📱", "blue", "Mobile onboarding", 4, "edited yesterday", ["ios"])]),
+        row([cur_design_card("v3 · side cart", "edited 2 hours ago", 6, ["current"]),
+             cur_design_card("v1 · stepper", "edited 3 days ago", 0, [])]),
+        960,
+    )
+
+def board_a():
+    return dir_board(
+        "Direction A", "Sketchbook",
+        "Answers “generic” with Excalidraw's own identity. Every card is a patch of canvas: the project colour becomes a dot-gridded band, the emoji sits on it as a tilted sticker, and design previews sit on the real canvas ground instead of a grey box. The modal previews the actual card you are building.",
+        "The sticker overlap costs ~24px of card height, and the motif needs discipline — repeated across fifty projects the tilt can read as twee rather than crafted.",
+        a_modal(),
+        row([a_project_card("🛒", "violet", "Checkout redesign", 7, "2 hours ago", ["web", "payments"]),
+             a_project_card("📱", "blue", "Mobile onboarding", 4, "yesterday", ["ios"])]),
+        row([a_design_card("v3 · side cart", "edited 2 hours ago", 6, ["current"]),
+             a_design_card("v1 · stepper", "edited 3 days ago", 0, [], editing=True)]),
+        1120,
+    )
+
+def board_b():
+    return dir_board(
+        "Direction B", "Workbench",
+        "Answers “generic” with density and rhythm. Projects stop being tiles and become a scannable list — accent rule, icon, name, tags inline, design count as a right-aligned figure — so twelve projects fit where four did. Designs become tighter tiles whose actions float over the preview on hover.",
+        "Efficient rather than characterful: it reads as a capable file manager. Thumbnails get small, and tags degrade to colour dots, so a heavily-tagged project loses information.",
+        b_modal(),
+        '<div class="Island" style="width: 100%; overflow: hidden; box-sizing: border-box;">'
+        + b_project_row("🛒", "violet", "Checkout redesign", 7, "edited 2 hours ago", ["web", "payments"])
+        + b_project_row("📱", "blue", "Mobile onboarding", 4, "edited yesterday", ["ios"])
+        + b_project_row("🏗️", "orange", "Platform architecture", 9, "edited 3 days ago", ["infra"], last=True)
+        + '</div>',
+        row([b_design_tile("v3 · side cart", "2 hours ago", 6, ["violet"], hovered=True),
+             b_design_tile("v2 · single page", "yesterday", 3, []),
+             b_design_tile("v1 · stepper", "3 days ago", 0, ["blue"])], gap="1rem"),
+        920,
+    )
+
+def board_c():
+    return dir_board(
+        "Direction C", "Gallery",
+        "Answers “generic” by letting the work carry the page. A project shows a fan of its own designs instead of an emoji tile; a design card is its preview, edge to edge, with a quiet caption underneath and actions that appear over the image. Bigger type, fewer things, more confidence.",
+        "It leans on thumbnails: blank or near-empty designs look weakest exactly where a new project starts. Cards are larger, so roughly a third fewer fit above the fold.",
+        c_modal(),
+        row([c_project_card("🛒", "violet", "Checkout redesign", 7, "edited 2 hours ago", ["web"], (6, 3, 0)),
+             c_project_card("📱", "blue", "Mobile onboarding", 4, "edited yesterday", ["ios"], (1, 5, 4))]),
+        row([c_design_card("v3 · side cart", "edited 2 hours ago", 6, hovered=True),
+             c_design_card("v2 · single page", "edited yesterday", 0, empty=True)]),
+        1010,
+    )
+
+FILES["DirCurrent.dc.html"] = board_current()
+FILES["DirSketchbook.dc.html"] = board_a()
+FILES["DirWorkbench.dc.html"] = board_b()
+FILES["DirGallery.dc.html"] = board_c()
+
+
 if __name__ == "__main__":
     for name, content in FILES.items():
         with open(os.path.join(HERE, name), "w") as f:

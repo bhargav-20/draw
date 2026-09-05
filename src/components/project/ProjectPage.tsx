@@ -38,7 +38,6 @@ import { EditTagsDialog } from "./EditTagsDialog";
 import { MoveDesignDialog } from "./MoveDesignDialog";
 import { NewDesignCard } from "./NewDesignCard";
 import { ProjectHeader } from "./ProjectHeader";
-import { RenameDialog } from "./RenameDialog";
 
 import "./ProjectPage.scss";
 
@@ -48,7 +47,6 @@ import type { SortableMove } from "../layout/SortableGrid";
 import type { Design, ProjectId } from "../../types";
 
 type DialogState =
-  | { kind: "rename"; design: Design }
   | { kind: "tags"; design: Design }
   | { kind: "move"; design: Design }
   | { kind: "delete-design"; design: Design }
@@ -159,10 +157,7 @@ export const ProjectPage = () => {
     }, "Could not duplicate the design");
 
   const handleRename = (design: Design, name: string) =>
-    run(async () => {
-      await updateDesign(design.id, { name });
-      closeDialog();
-    }, "Could not rename the design");
+    run(() => updateDesign(design.id, { name }), "Could not rename the design");
 
   const handleEditTags = (design: Design, tags: string[]) =>
     run(async () => {
@@ -247,7 +242,7 @@ export const ProjectPage = () => {
   const designActions = (design: Design) => ({
     onOpen: () => openDesign(design),
     onDuplicate: () => handleDuplicate(design),
-    onRename: () => setDialog({ kind: "rename", design }),
+    onRename: (name: string) => handleRename(design, name),
     onEditTags: () => setDialog({ kind: "tags", design }),
     onMove: () => setDialog({ kind: "move", design }),
     onArchiveToggle: () => handleArchiveToggle(design),
@@ -378,17 +373,6 @@ export const ProjectPage = () => {
       </div>
 
       {renderContent()}
-
-      <RenameDialog
-        open={dialog?.kind === "rename"}
-        onClose={closeDialog}
-        value={dialog?.kind === "rename" ? dialog.design.name : ""}
-        onSubmit={(name) =>
-          dialog?.kind === "rename"
-            ? handleRename(dialog.design, name)
-            : undefined
-        }
-      />
 
       <EditTagsDialog
         open={dialog?.kind === "tags"}

@@ -226,15 +226,6 @@ export const LogoIcon = tabler(
   "2",
 );
 
-// tabler-icons: lock
-export const LockIcon = tabler(
-  <>
-    <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z" />
-    <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
-    <path d="M8 11v-4a4 4 0 1 1 8 0v4" />
-  </>,
-);
-
 // tabler-icons: alert-triangle
 export const AlertIcon = tabler(
   <>
@@ -290,6 +281,13 @@ export const GridIcon = tabler(
     <path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
     <path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
     <path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+  </>,
+);
+
+// tabler-icons: rectangle (blank-canvas empty state)
+export const RectangleIcon = tabler(
+  <>
+    <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
   </>,
 );
 

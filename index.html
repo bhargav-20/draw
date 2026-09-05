@@ -51,6 +51,23 @@
       // self-hosted excalidraw fonts (copied from the package into /public/fonts by `scripts/copy-fonts.mjs`)
       window.EXCALIDRAW_ASSET_PATH = "%BASE_URL%";
     </script>
+    <!--
+      The package registers Excalifont at runtime, but only once the editor
+      mounts — the dashboard never does. Declare it here, where `%BASE_URL%`
+      keeps the path right under a sub-path deploy, and limit it to Latin so it
+      can never be picked for anything but our own hand-drawn labels.
+    -->
+    <style>
+      @font-face {
+        font-family: "Excalifont";
+        src: url("%BASE_URL%fonts/Excalifont/Excalifont-Regular-latin.woff2")
+          format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        unicode-range: U+20-7e;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

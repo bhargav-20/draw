@@ -30,7 +30,6 @@ describe("DashboardPage", () => {
         selector: ".EmptyState__title",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/stored in this browser/)).toBeInTheDocument();
   });
 
   it("renders project cards with design counts and tags", async () => {
@@ -57,6 +56,32 @@ describe("DashboardPage", () => {
     expect(
       screen.getByRole("link", { name: "Open project Mobile onboarding" }),
     ).toBeInTheDocument();
+  });
+
+  it("fans the project's most recent designs on its card", async () => {
+    const checkout = await createProject({ name: "Checkout redesign" });
+    for (const name of ["v1", "v2", "v3", "v4"]) {
+      await createDesign({ projectId: checkout.id, name });
+    }
+    await createProject({ name: "Nothing here yet" });
+
+    renderDashboard();
+
+    const busy = cardOf(
+      await screen.findByRole("link", {
+        name: "Open project Checkout redesign",
+      }),
+    );
+    // four designs, three sheets — the fan caps at PROJECT_PREVIEW_COUNT
+    await waitFor(() =>
+      expect(busy.querySelectorAll(".ProjectCard__sheet")).toHaveLength(3),
+    );
+
+    const empty = cardOf(
+      screen.getByRole("link", { name: "Open project Nothing here yet" }),
+    );
+    expect(empty.querySelectorAll(".ProjectCard__sheet")).toHaveLength(0);
+    expect(within(empty).getByText("No designs yet")).toBeInTheDocument();
   });
 
   it("creates a project from the dialog and opens it", async () => {

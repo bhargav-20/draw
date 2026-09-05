@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Link } from "react-router";
 
+import { useInlineRename } from "../../hooks/useInlineRename";
 import { pluralize } from "../../utils";
 import {
   ArchiveIcon,
@@ -46,46 +47,8 @@ export const ProjectHeader = ({
   /** extra buttons (export / import) rendered before the actions menu */
   actions?: React.ReactNode;
 }) => {
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(project.name);
-  // set once the edit is committed or cancelled: unmounting the input fires
-  // a blur, which must not commit (or rename) a second time
-  const settled = useRef(false);
+  const rename = useInlineRename(project.name, onRename);
   const archived = !!project.archivedAt;
-
-  const startEditing = () => {
-    setDraft(project.name);
-    settled.current = false;
-    setEditing(true);
-  };
-
-  const commit = () => {
-    if (settled.current) {
-      return;
-    }
-    settled.current = true;
-    setEditing(false);
-    const name = draft.trim();
-    if (name && name !== project.name) {
-      onRename(name);
-    }
-  };
-
-  const cancel = () => {
-    settled.current = true;
-    setEditing(false);
-  };
-
-  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      commit();
-    } else if (event.key === "Escape") {
-      event.preventDefault();
-      event.stopPropagation();
-      cancel();
-    }
-  };
 
   return (
     <div className="ProjectHeader">
@@ -103,13 +66,13 @@ export const ProjectHeader = ({
         </div>
         <div className="ProjectHeader__text">
           <div className="ProjectHeader__title-row">
-            {editing ? (
+            {rename.editing ? (
               <TextField
                 className="ProjectHeader__name-input"
-                value={draft}
-                onChange={setDraft}
-                onKeyDown={onKeyDown}
-                onBlur={commit}
+                value={rename.draft}
+                onChange={rename.setDraft}
+                onKeyDown={rename.onKeyDown}
+                onBlur={rename.commit}
                 aria-label="Project name"
                 autoFocus
                 selectOnRender
@@ -121,7 +84,7 @@ export const ProjectHeader = ({
                   <button
                     type="button"
                     className="ProjectHeader__name-button text-ellipsis"
-                    onClick={startEditing}
+                    onClick={rename.start}
                     title="Click to rename"
                   >
                     {project.name}
@@ -132,7 +95,7 @@ export const ProjectHeader = ({
                   size="sm"
                   icon={PencilIcon}
                   label="Rename project"
-                  onClick={startEditing}
+                  onClick={rename.start}
                   className="ProjectHeader__rename"
                 />
                 {archived && <Tag label="Archived" className="Tag--archived" />}

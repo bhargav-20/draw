@@ -139,7 +139,24 @@ describe("ProjectPage", () => {
     );
   });
 
-  it("renames a design through the dialog", async () => {
+  it("renames a design inline on the card", async () => {
+    const user = userEvent.setup();
+    const project = await createProject({ name: "Checkout" });
+    await createDesign({ projectId: project.id, name: "v1" });
+    renderProjectPage(project);
+
+    await screen.findByRole("link", { name: "Open design v1" });
+    await user.click(screen.getByRole("button", { name: "Rename v1" }));
+    const input = await screen.findByLabelText("Design name");
+    await user.clear(input);
+    await user.type(input, "v1 · stepper{Enter}");
+
+    expect(
+      await screen.findByRole("link", { name: "Open design v1 · stepper" }),
+    ).toBeInTheDocument();
+  });
+
+  it("starts the inline rename from the card menu and reverts on Escape", async () => {
     const user = userEvent.setup();
     const project = await createProject({ name: "Checkout" });
     await createDesign({ projectId: project.id, name: "v1" });
@@ -150,13 +167,14 @@ describe("ProjectPage", () => {
       screen.getByRole("button", { name: "Design actions for v1" }),
     );
     await user.click(await screen.findByRole("menuitem", { name: "Rename" }));
-    const dialog = await screen.findByRole("dialog");
-    const input = within(dialog).getByLabelText("Name");
+
+    const input = await screen.findByLabelText("Design name");
     await user.clear(input);
-    await user.type(input, "v1 · stepper{Enter}");
+    await user.type(input, "discarded{Escape}");
 
     expect(
-      await screen.findByRole("link", { name: "Open design v1 · stepper" }),
+      await screen.findByRole("link", { name: "Open design v1" }),
     ).toBeInTheDocument();
+    expect(await listDesigns(project.id)).toMatchObject([{ name: "v1" }]);
   });
 });

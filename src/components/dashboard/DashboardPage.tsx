@@ -17,7 +17,7 @@ import { useSettings } from "../../hooks/useSettings";
 import { downloadBlob, matchesSearch, pluralize } from "../../utils";
 import { ExportAllButton } from "../backup/ExportAllButton";
 import { ImportBackupDialog } from "../backup/ImportBackupDialog";
-import { GridIcon, LockIcon, PlusIcon, SearchIcon, UploadIcon } from "../icons";
+import { GridIcon, PlusIcon, SearchIcon, UploadIcon } from "../icons";
 import { AppShell } from "../layout/AppShell";
 import { EmptyState } from "../layout/EmptyState";
 import { applyMove } from "../layout/SortableGrid";
@@ -30,6 +30,7 @@ import {
 } from "../ui";
 
 import { DesignSearchResults } from "./DesignSearchResults";
+import { PROJECT_PREVIEW_COUNT } from "./ProjectCard";
 import { ProjectDialog } from "./ProjectDialog";
 import { ProjectGrid } from "./ProjectGrid";
 import { SearchBox } from "./SearchBox";
@@ -41,7 +42,7 @@ import type { SortableMove } from "../layout/SortableGrid";
 import type { DesignSearchResult } from "./DesignSearchResults";
 import type { ProjectFormValues } from "./ProjectDialog";
 
-import type { Project } from "../../types";
+import type { Design, Project } from "../../types";
 
 type DialogState =
   | { kind: "create" }
@@ -91,6 +92,31 @@ export const DashboardPage = () => {
       }
     }
     return counts;
+  }, [allDesigns]);
+
+  /** the most recently edited designs of each project, for the card's fan */
+  const designPreviews = useMemo(() => {
+    const byProject = new Map<string, Design[]>();
+    for (const design of allDesigns ?? []) {
+      if (design.archivedAt) {
+        continue;
+      }
+      const sheets = byProject.get(design.projectId);
+      if (sheets) {
+        sheets.push(design);
+      } else {
+        byProject.set(design.projectId, [design]);
+      }
+    }
+    for (const [projectId, sheets] of byProject) {
+      byProject.set(
+        projectId,
+        sheets
+          .sort((a, b) => b.updatedAt - a.updatedAt)
+          .slice(0, PROJECT_PREVIEW_COUNT),
+      );
+    }
+    return byProject;
   }, [allDesigns]);
 
   const tagSuggestions = useMemo(() => getAllTags(allProjects), [allProjects]);
@@ -251,6 +277,7 @@ export const DashboardPage = () => {
           <ProjectGrid
             projects={visibleProjects}
             designCounts={designCounts}
+            previews={designPreviews}
             onReorder={handleReorder}
             onTagClick={(tag) => setQuery(`#${tag}`)}
             actions={(project) => ({
@@ -324,14 +351,6 @@ export const DashboardPage = () => {
       </div>
 
       {renderContent()}
-
-      <div className="StorageNote">
-        {LockIcon}
-        <span>
-          Everything is stored in this browser (IndexedDB). Export a backup to
-          keep a copy on disk.
-        </span>
-      </div>
 
       <ProjectDialog
         open={dialog?.kind === "create" || dialog?.kind === "edit"}

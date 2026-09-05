@@ -41,3 +41,6 @@ public/fonts/
 
 # seeded design-canvas page (2 MB, regenerated from the .dc.html files)
 design-canvas/excalidraw-projects-ui.html
+
+# python bytecode from design-canvas/build.py
+__pycache__/

@@ -61,42 +61,68 @@ const ProjectForm = ({
     }
   };
 
+  const heading = project ? "Edit project" : "New project";
+
   return (
-    <form className="ProjectDialog__form" onSubmit={submit}>
-      <TextField
-        label="Name"
-        value={name}
-        onChange={setName}
-        placeholder="Untitled project"
-        autoFocus
-        selectOnRender={!!project}
-        fullWidth
-        maxLength={120}
-      />
-      <div className="ProjectDialog__field">
-        <div className="Dialog__field-label">Icon</div>
-        <EmojiPicker value={emoji} onChange={setEmoji} color={color} />
+    <form
+      className="ProjectDialog__form"
+      onSubmit={submit}
+      style={
+        {
+          "--pd-accent": `var(--pc-${color})`,
+          "--pd-accent-bg": `var(--pc-${color}-bg)`,
+        } as React.CSSProperties
+      }
+    >
+      {/* the identity you are choosing, shown at the size the card will use */}
+      <div className="ProjectDialog__hero">
+        <div className="ProjectDialog__hero-tile" aria-hidden>
+          {emoji}
+        </div>
+        <h2 className="ProjectDialog__hero-title">{heading}</h2>
       </div>
-      <div className="ProjectDialog__field">
-        <div className="Dialog__field-label">Colour</div>
-        <ColorSwatches value={color} onChange={setColor} />
-      </div>
-      <TagInput
-        label="Tags"
-        value={tags}
-        onChange={setTags}
-        suggestions={tagSuggestions}
-      />
-      <DialogActions>
-        <DialogActionButton label="Cancel" onClick={onCancel} disabled={busy} />
-        <DialogActionButton
-          type="submit"
-          actionType="primary"
-          label={project ? "Save changes" : "Create project"}
-          icon={project ? CheckIcon : PlusIcon}
-          disabled={busy}
+      <div className="ProjectDialog__fields">
+        <TextField
+          label="Name"
+          value={name}
+          onChange={setName}
+          placeholder="Untitled project"
+          autoFocus
+          selectOnRender={!!project}
+          fullWidth
+          maxLength={120}
         />
-      </DialogActions>
+        <div className="ProjectDialog__field">
+          <div className="Dialog__field-label">Appearance</div>
+          <ColorSwatches value={color} onChange={setColor} />
+          <EmojiPicker value={emoji} onChange={setEmoji} color={color} />
+        </div>
+        <div className="ProjectDialog__field">
+          <TagInput
+            label="Tags"
+            value={tags}
+            onChange={setTags}
+            suggestions={tagSuggestions}
+          />
+          <p className="Dialog__hint">
+            Tags are shared with designs and searchable with #tag.
+          </p>
+        </div>
+        <DialogActions>
+          <DialogActionButton
+            label="Cancel"
+            onClick={onCancel}
+            disabled={busy}
+          />
+          <DialogActionButton
+            type="submit"
+            actionType="primary"
+            label={project ? "Save changes" : "Create project"}
+            icon={project ? CheckIcon : PlusIcon}
+            disabled={busy}
+          />
+        </DialogActions>
+      </div>
     </form>
   );
 };
@@ -118,7 +144,8 @@ export const ProjectDialog = ({
   <Dialog
     open={open}
     onClose={onClose}
-    title={project ? "Edit project" : "New project"}
+    title={false}
+    aria-label={project ? "Edit project" : "New project"}
     size="small"
     className="ProjectDialog"
   >

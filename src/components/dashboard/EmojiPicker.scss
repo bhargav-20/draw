@@ -1,17 +1,16 @@
 // rendered inside dialogs (portal) – scoped to `.excalidraw`, not `.ProjectsApp`
 .excalidraw {
   .EmojiPicker {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2.375rem, 1fr));
+    gap: 0.375rem;
 
     &__option,
     &__custom {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 2.5rem;
-      height: 2.5rem;
+      height: 2.375rem;
       padding: 0;
       box-sizing: border-box;
       border: 1px solid transparent;
@@ -19,12 +18,14 @@
       background: var(--color-surface-low);
       color: var(--color-on-surface);
       font-family: var(--ui-font);
-      font-size: 1.375rem;
+      font-size: 1.25rem;
       line-height: 1;
       cursor: pointer;
+      transition: background 120ms ease-out, transform 100ms ease-out;
 
       &:hover {
         background: var(--color-surface-high);
+        transform: translateY(-1px);
       }
 
       &:focus-visible {
@@ -32,19 +33,19 @@
         box-shadow: 0 0 0 1px var(--color-brand-hover);
       }
 
-      &--selected {
-        box-shadow: 0 0 0 2px var(--color-brand-active);
-
-        &:focus-visible {
-          box-shadow: 0 0 0 2px var(--color-brand-active);
-        }
+      // the ring picks up the project colour when the picker sits in a form
+      // that declares `--pd-accent`
+      &--selected,
+      &--selected:focus-visible {
+        box-shadow: 0 0 0 2px var(--pd-accent, var(--color-brand-active));
       }
     }
 
     &__custom {
-      width: 3.75rem;
+      grid-column: span 2;
+      width: 100%;
+      min-width: 0;
       text-align: center;
-      font-size: 1.375rem;
       cursor: text;
 
       &::placeholder {
@@ -53,9 +54,13 @@
         color: var(--color-gray-50);
       }
 
+      &:hover {
+        transform: none;
+      }
+
       &:focus {
         outline: transparent;
-        border-color: var(--color-brand-active);
+        border-color: var(--pd-accent, var(--color-brand-active));
       }
     }
   }
