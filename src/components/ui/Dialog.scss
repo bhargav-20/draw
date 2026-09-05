@@ -25,6 +25,17 @@
 
   .Dialog__title {
     font-weight: 600;
+    // `.Dialog` is a flex column with its own gap; drop upstream's extra margin
+    margin-bottom: 0;
+    // leave room for the close button on the same row
+    padding-right: 2.5rem;
+  }
+
+  // vertically centre the close button on the title row (dialog padding is
+  // 2.5rem, title line box ≈ 1.875rem, button ≈ 1.625rem incl. padding)
+  .Dialog__close {
+    top: 2.875rem;
+    right: 2.125rem;
   }
 
   .Dialog__content {

@@ -1,3 +1,39 @@
+// App-only design tokens. Declared on both the page root and the portal
+// container (dialogs, menus, toasts) so `var(--pc-*)` resolves in either.
+@mixin app-tokens {
+  // ---- project accent colours (open-color 0 / 7, same source as upstream Card.tsx)
+  --pc-gray-bg: #f1f3f5;
+  --pc-gray: #868e96;
+  --pc-violet-bg: #f3f0ff;
+  --pc-violet: #7048e8;
+  --pc-blue-bg: #e7f5ff;
+  --pc-blue: #1c7ed6;
+  --pc-teal-bg: #e6fcf5;
+  --pc-teal: #0ca678;
+  --pc-green-bg: #ebfbee;
+  --pc-green: #37b24d;
+  --pc-yellow-bg: #fff9db;
+  --pc-yellow: #f59f00;
+  --pc-orange-bg: #fff4e6;
+  --pc-orange: #f76707;
+  --pc-red-bg: #fff5f5;
+  --pc-red: #e03131;
+  --pc-pink-bg: #fff0f6;
+  --pc-pink: #d6336c;
+}
+
+@mixin app-tokens-dark {
+  --pc-gray-bg: #2b2d31;
+  --pc-violet-bg: #2f2a4a;
+  --pc-blue-bg: #1f2f43;
+  --pc-teal-bg: #163a30;
+  --pc-green-bg: #1d3a24;
+  --pc-yellow-bg: #3d3416;
+  --pc-orange-bg: #3f2a17;
+  --pc-red-bg: #40201f;
+  --pc-pink-bg: #3f1f2c;
+}
+
 /**
  * App-level styles. Design tokens come from `@excalidraw/excalidraw/index.css`
  * (the `.excalidraw` / `.excalidraw.theme--dark` blocks); we only add what
@@ -28,40 +64,14 @@
     font-family: var(--ui-font);
   }
 
-  // ---- project accent colours (open-color 0 / 7, same source as upstream Card.tsx)
-  --pc-gray-bg: #f1f3f5;
-  --pc-gray: #868e96;
-  --pc-violet-bg: #f3f0ff;
-  --pc-violet: #7048e8;
-  --pc-blue-bg: #e7f5ff;
-  --pc-blue: #1c7ed6;
-  --pc-teal-bg: #e6fcf5;
-  --pc-teal: #0ca678;
-  --pc-green-bg: #ebfbee;
-  --pc-green: #37b24d;
-  --pc-yellow-bg: #fff9db;
-  --pc-yellow: #f59f00;
-  --pc-orange-bg: #fff4e6;
-  --pc-orange: #f76707;
-  --pc-red-bg: #fff5f5;
-  --pc-red: #e03131;
-  --pc-pink-bg: #fff0f6;
-  --pc-pink: #d6336c;
+  @include app-tokens;
 
   --card-thumbnail-height: 9.5rem;
   --page-padding-x: 2rem;
   --header-height: 4rem;
 
   &.theme--dark {
-    --pc-gray-bg: #2b2d31;
-    --pc-violet-bg: #2f2a4a;
-    --pc-blue-bg: #1f2f43;
-    --pc-teal-bg: #163a30;
-    --pc-green-bg: #1d3a24;
-    --pc-yellow-bg: #3d3416;
-    --pc-orange-bg: #3f2a17;
-    --pc-red-bg: #40201f;
-    --pc-pink-bg: #3f1f2c;
+    @include app-tokens-dark;
   }
 
   @media (max-width: 720px) {
@@ -71,6 +81,12 @@
 
 // portal root for dialogs / popovers rendered outside the page tree
 .excalidraw.ProjectsApp-portal {
+  @include app-tokens;
+
+  &.theme--dark {
+    @include app-tokens-dark;
+  }
+
   position: fixed;
   inset: 0;
   z-index: var(--zIndex-modal);

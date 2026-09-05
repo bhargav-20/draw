@@ -25,3 +25,39 @@
     color: var(--ExcTextField--placeholder);
   }
 }
+
+.excalidraw {
+  // Excalidraw's global `input[type="text"]` rule (border, padding, background)
+  // outranks upstream's `.ExcTextField__input input` reset once an explicit
+  // `type` attribute is present – restore the bare inner input.
+  .ExcTextField__input input[type="text"],
+  .ExcTextField__input input[type="search"],
+  .TagInput__box input {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--ExcTextField--color);
+    font-family: var(--ui-font);
+    height: 1.5rem;
+    line-height: 150%;
+    width: 100%;
+    min-width: 0;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+    }
+  }
+}
