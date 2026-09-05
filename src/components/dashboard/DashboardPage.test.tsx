@@ -50,7 +50,8 @@ describe("DashboardPage", () => {
         name: "Open project Checkout redesign",
       }),
     );
-    expect(within(card).getByText(/2 designs/)).toBeInTheDocument();
+    // same race as the project header: the counts come from a second query
+    expect(await within(card).findByText(/2 designs/)).toBeInTheDocument();
     expect(within(card).getByText("web")).toBeInTheDocument();
     expect(within(card).getByText("payments")).toBeInTheDocument();
     expect(

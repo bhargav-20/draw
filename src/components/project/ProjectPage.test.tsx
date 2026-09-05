@@ -44,7 +44,9 @@ describe("ProjectPage", () => {
     expect(
       await screen.findByRole("heading", { name: "Checkout redesign" }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/2 designs · created/)).toBeInTheDocument();
+    // the designs live query settles after the project's, so the header's
+    // count arrives a render later than the heading
+    expect(await screen.findByText(/2 designs · created/)).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Open design v1 · stepper" }),
     ).toBeInTheDocument();
@@ -122,7 +124,7 @@ describe("ProjectPage", () => {
         screen.queryByRole("link", { name: "Open design v1" }),
       ).not.toBeInTheDocument(),
     );
-    expect(screen.getByText(/1 design · created/)).toBeInTheDocument();
+    expect(await screen.findByText(/1 design · created/)).toBeInTheDocument();
 
     await user.click(screen.getByLabelText("Show archived"));
     const card = cardOf(
